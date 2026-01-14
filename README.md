@@ -31,8 +31,10 @@ Ao revisitar este código hoje, com a experiência adquirida em arquitetura de s
 - **ORM vs SQL Puro:** Utilizei queries SQL diretas. Atualmente, optaria por um ORM como **SQLAlchemy** para maior segurança e abstração.  
 - **Segurança:** A implementação do **Flask-Bcrypt** foi um passo fundamental para entender a importância de não salvar senhas em texto puro, elevando o nível de segurança da aplicação.  
 
-😢 **Olhando para o código antigo, percebo as limitações e escolhas que hoje não faria. **
-😊 **Mas também sinto orgulho, porque manter o projeto original aqui serve para documentar minha **evolução técnica.**
+### 📈 Evolução Técnica
+
+- 😢**Código Antigo:** Ao revisar, percebo limitações e escolhas que hoje não faria.  
+- 😊**Orgulho:** Manter o projeto original serve como registro da minha **evolução técnica**.  
 ---
 
 ## 📸 Tour pela Aplicação
