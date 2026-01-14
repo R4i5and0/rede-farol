@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+
+{% block title %} Diagnóstico de Segurança {% endblock %}
+
+{% block styles %}
+  {{ super() }}
+  <style>
+    .diagnostico-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(142, 45, 226, 0.3);
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 20px;
+        color: #fff;
+    }
+    .form-section-title {
+        color: #8e2de2;
+        font-weight: bold;
+        margin-bottom: 20px;
+        border-bottom: 1px solid rgba(142, 45, 226, 0.3);
+        padding-bottom: 10px;
+        display: flex;
+        align-items: center;
+    }
+    .form-check-input:checked {
+        background-color: #8e2de2;
+        border-color: #8e2de2;
+        box-shadow: 0 0 8px rgba(142, 45, 226, 0.5);
+    }
+    .btn-diagnostico {
+        background: linear-gradient(135deg, #8e2de2, #4a00e0);
+        border: none;
+        width: 100%;
+        padding: 15px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 10px;
+        transition: transform 0.2s;
+    }
+    .btn-diagnostico:hover {
+        transform: scale(1.02);
+        color: #fff;
+    }
+
+    /* Estilo das perguntas */
+    .question-text {
+        color: #ffffff !important;
+        font-weight: bold;
+        margin-bottom: 10px;
+        padding: 8px 12px;
+        background: rgba(142, 45, 226, 0.1);
+        border-radius: 8px;
+        border-left: 4px solid #8e2de2;
+    }
+
+    /* Estilo das opções de resposta */
+    .form-check-label {
+        color: #cccccc !important;
+        font-size: 1rem;
+        transition: color 0.2s;
+    }
+
+    .form-check-input:checked + .form-check-label {
+        color: #ffffff !important;
+        font-weight: bold;
+        animation: pulse 0.3s ease-in-out;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    /* Destaque para erros de validação */
+    .form-check-input:invalid {
+        border-color: #ff4d4d !important;
+        box-shadow: 0 0 5px rgba(255, 77, 77, 0.6) !important;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        
+        <div class="hero-content hero-content-box mx-auto text-center mb-4">
+            <h1 class="neon-float-title">Teste de Risco: Proteja Sua Luz Digital 🌅 </h1>
+            <p class="lead">
+               A primeira etapa para descobrir seus pontos fracos e blindar sua vida digital.
+            </p>
+
+            {% if ultimo_diagnostico %}
+              <div class="text-center mb-3">
+                <a href="{{ url_for('ver_ultimo_diagnostico') }}" class="btn btn-outline-light btn-sm">
+                  <i class="fas fa-file-alt me-1"></i> Ver meu último resultado
+                </a>
+              </div>
+            {% endif %}
+
+            <a href="{{ url_for('dashboard_usuario') }}" class="btn btn-farol">
+                <i class="fas fa-arrow-left me-2"></i> Voltar para o Dashboard
+            </a>
+        </div>
+
+        <form method="POST" action="{{ url_for('diagnostico') }}">
+            
+            <div class="diagnostico-card">
+                <h4 class="form-section-title"><i class="fas fa-key me-2"></i> Senhas</h4>
+                
+                <div class="mb-4">
+                    <p class="question-text fw-bold mb-3">
+                        Como são suas senhas geralmente?
+                    </p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="senha_tamanho" value="fraco" required>
+                        <label class="form-check-label">
+                            Curtas (ex: nome123, data de nascimento)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="senha_tamanho" value="medio">
+                        <label class="form-check-label">
+                            Médias (8 caracteres, alguma letra maiúscula)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="senha_tamanho" value="forte">
+                        <label class="form-check-label">
+                            Fortes (12+ caracteres, símbolos, aleatórias)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <p class="question-text fw-bold mb-3">
+                        Você usa a mesma senha para tudo?
+                    </p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="senha_reuso" value="sim" required>
+                        <label class="form-check-label">
+                            Sim, para facilitar.
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="senha_reuso" value="nao">
+                        <label class="form-check-label">
+                            Não, uso senhas diferentes.
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="diagnostico-card">
+                <h4 class="form-section-title"><i class="fas fa-fish me-2"></i> Golpes (Phishing)</h4>
+                
+                <div class="mb-4">
+                    <p class="question-text fw-bold mb-3">
+                        Se receber um SMS do "banco" com um link urgente, o que faz?
+                    </p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="phishing_link" value="clico" required>
+                        <label class="form-check-label">
+                            Clico para resolver logo.
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="phishing_link" value="verifico">
+                        <label class="form-check-label">
+                            Não clico. Ligo para o banco ou abro o app oficial.
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <p class="question-text fw-bold mb-3">
+                        Você confia em promoções "boas demais" no WhatsApp?
+                    </p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="phishing_promo" value="confio" required>
+                        <label class="form-check-label">
+                            Sim, às vezes dou sorte.
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="phishing_promo" value="desconfio">
+                        <label class="form-check-label">
+                            Desconfio e verifico no site oficial.
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="diagnostico-card">
+                <h4 class="form-section-title"><i class="fas fa-share-alt me-2"></i> Redes Sociais</h4>
+                
+                <div class="mb-4">
+                    <p class="question-text fw-bold mb-3">
+                        Quem pode ver suas postagens no Instagram/Facebook?
+                    </p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="social_privacidade" value="todos" required>
+                        <label class="form-check-label">
+                            Todo mundo (Perfil Público)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="social_privacidade" value="fechado">
+                        <label class="form-check-label">
+                            Apenas amigos/seguidores (Perfil Privado)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <p class="question-text fw-bold mb-3">
+                        Você posta fotos de passagens aéreas ou localização em tempo real?
+                    </p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="social_exposicao" value="muito" required>
+                        <label class="form-check-label">
+                            Sim, gosto de compartilhar.
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="social_exposicao" value="pouco">
+                        <label class="form-check-label">
+                            Evito ou posto só depois de sair do local.
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+             <div class="diagnostico-card">
+                <h4 class="form-section-title"><i class="fas fa-wifi me-2"></i> Wi-Fi e Dispositivos</h4>
+                
+                <div class="mb-4">
+                    <p class="question-text fw-bold mb-3">
+                        Você acessa banco em Wi-Fi de rodoviária/café?
+                    </p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="wifi_publico" value="sempre" required>
+                        <label class="form-check-label">
+                            Sim, se tiver Wi-Fi grátis eu uso.
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="wifi_publico" value="nunca">
+                        <label class="form-check-label">
+                            Nunca. Uso meu 4G/5G nessas horas.
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <p class="question-text fw-bold mb-3">
+                        Você usa antivírus no computador?
+                    </p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="antivirus" value="nao" required>
+                        <label class="form-check-label">
+                            Não uso ou está vencido.
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="antivirus" value="sim">
+                        <label class="form-check-label">
+                            Sim (Defender, Kaspersky, etc).
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-diagnostico text-white mt-3 mb-5">
+                <i class="fas fa-calculator me-2"></i> Calcular Meu Risco
+            </button>
+
+        </form>
+    </div>
+</div>
+{% endblock %}

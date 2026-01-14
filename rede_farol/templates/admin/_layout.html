@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      {% block title %}
+        Painel Admin
+      {% endblock %}- Rede Farol
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body class="d-flex flex-column min-vh-100">
+    <canvas id="stars"></canvas>
+
+    <img src="{{ url_for('static', filename='img/farol.jpg') }}" class="page-background-image" alt="Imagem de fundo de um farol" />
+
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(10, 5, 20, 0.8);">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{ url_for('admin_dashboard') }}">Rede Farol - Admin</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="adminNav">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('home') }}" target="_blank">Ver Site</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('listar_conteudos') }}">Conteúdo</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('mural') }}">Mural</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('logout') }}">Sair</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="flex-grow-1">
+      {% block content %}
+      {% endblock %}
+    </main>
+
+    <footer class="mt-auto text-center py-3 text-white-50">
+      <p>&copy; 2025 Rede Farol. Painel Administrativo.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>

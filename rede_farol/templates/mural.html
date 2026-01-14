@@ -1,0 +1,379 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Mural de Avaliações - Rede Farol
+{% endblock %}
+
+{% block styles %}
+  {{ super() }}
+  <style>
+    /* Estilo do título do post */
+    .post-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #9b59b6, #e91e63);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+      margin: 0;
+      word-wrap: break-word;
+    }
+    
+    /* Autor da avaliação */
+    .post-author {
+      color: #d0b0ff !important;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-top: 0.25rem;
+      display: block;
+      text-shadow: 0 0 3px rgba(142, 45, 226, 0.5);
+      letter-spacing: 0.3px;
+      word-wrap: break-word;
+    }
+
+    /* Conteúdo da avaliação — DESTAQUE PRINCIPAL */
+
+.post-content {
+    margin: 16px 0 0;
+    padding: 16px 18px;
+    border-left: 3px solid #a56eff;
+    background: rgba(142, 45, 226, 0.08);
+    border-radius: 8px;
+    position: relative;
+
+    /* --- ADICIONE ISTO --- */
+    max-height: 100px;  /* Defina uma altura máxima (ajuste se quiser) */
+    overflow-y: auto;   /* Adiciona o scroll SÓ quando necessário */
+}
+/* Estilização da barra de scroll (Opcional) */
+.post-content::-webkit-scrollbar {
+    width: 8px; /* Largura da barra */
+}
+
+.post-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2); /* Fundo da barra */
+    border-radius: 4px;
+}
+
+.post-content::-webkit-scrollbar-thumb {
+    background-color: rgba(142, 45, 226, 0.5); /* Cor do "pegador" */
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.post-content::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(142, 45, 226, 0.8); /* Cor ao passar o mouse */
+}
+    .post-content p {
+      font-size: 1.1rem; /* Maior que antes */
+      line-height: 1.7; /* Mais espaço entre linhas */
+      color: #ffffff;
+      margin: 0;
+      white-space: pre-line;
+      word-wrap: break-word;
+      font-weight: 400;
+      letter-spacing: 0.2px;
+    }
+
+    /* Em telas menores */
+    @media (max-width: 768px) {
+      .post-content p {
+        font-size: 1rem;
+        line-height: 1.6;
+        padding: 0 4px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .post-content p {
+        font-size: 0.95rem;
+        line-height: 1.55;
+      }
+    }
+
+    /* Botão do conteúdo avaliado */
+    .content-link {
+      color: #8c46ff !important;
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-decoration: none;
+      border: none;
+      background: none;
+      padding: 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .content-link:hover {
+      color: #a56eff !important;
+      text-shadow: 0 0 6px rgba(142, 45, 226, 0.7);
+      transform: scale(1.05);
+    }
+    
+    .content-link:active {
+      transform: scale(0.95);
+      transition: transform 0.1s ease-in-out;
+    }
+    
+    /* Estilo geral do card */
+    .post-card {
+      background: rgba(30, 30, 50, 0.8);
+      border: 1px solid rgba(142, 45, 226, 0.3);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      color: #e0e0ff;
+      word-wrap: break-word;
+    }
+    
+    /* Estilo da avaliação por estrelas */
+    .post-rating {
+      margin: 14px 0;
+    }
+    
+    .post-rating i {
+      color: #ffc107;
+      font-size: 1.3rem;
+    }
+    
+    .post-rating i.far {
+      color: rgba(255, 193, 7, 0.3);
+    }
+    
+    /* Data */
+    .post-date {
+      color: #b0b0c0;
+      font-size: 0.9rem;
+      margin-top: 10px;
+      font-style: italic;
+    }
+    
+    /* Botões de ação */
+    .btn-edit,
+    .btn-delete {
+      font-size: 0.8rem;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-width: 65px;
+    }
+    
+    .btn-edit {
+      background: linear-gradient(90deg, #8c46ff, #a56eff);
+      color: white;
+    }
+    
+    .btn-edit:hover {
+      background: linear-gradient(90deg, #a56eff, #b980ff);
+      transform: translateY(-1px);
+    }
+    
+    .btn-delete {
+      background: linear-gradient(90deg, #ff4757, #ff6b6b);
+      color: white;
+    }
+    
+    .btn-delete:hover {
+      background: linear-gradient(90deg, #ff6b6b, #ff8e8e);
+      transform: translateY(-1px);
+    }
+
+    /* Modal personalizado */
+    .modal-content-custom {
+      background: rgba(30, 30, 50, 0.95);
+      border: 1px solid rgba(142, 45, 226, 0.3);
+      border-radius: 16px;
+      color: #fff;
+    }
+
+    .modal-header-custom {
+      background: rgba(142, 45, 226, 0.2);
+      border-bottom: 1px solid rgba(142, 45, 226, 0.3);
+    }
+
+    .modal-body-custom {
+      padding: 20px;
+    }
+
+    .modal-title {
+      font-weight: 700;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .post-title {
+        font-size: 1.3rem;
+      }
+      .post-author {
+        font-size: 0.95rem;
+      }
+      .post-card {
+        padding: 18px;
+        margin-bottom: 22px;
+      }
+      .btn-edit,
+      .btn-delete {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .post-title {
+        font-size: 1.2rem;
+      }
+      .post-card {
+        padding: 16px;
+      }
+      .post-rating i {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="hero-content hero-yellow-border mx-auto text-center mb-4">
+    <h1 class="neon-float-title">Avaliações</h1>
+    <a href="{{ url_for('criar_post_mural', id_conteudo=0) }}" class="btn btn-farol mt-3">Fazer uma Avaliação</a>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      {% for post in posts %}
+        <div class="post-card">
+          <div class="post-header">
+            <h5 class="post-title">{{ post.titulo }}</h5>
+            <span class="post-author">por {{ post.nome_usuario }}</span>
+          </div>
+
+          <!-- Conteúdo avaliado -->
+          {% if post.titulo_conteudo %}
+            <div class="mb-2 d-flex align-items-center gap-2">
+              <strong>Conteúdo avaliado:</strong>
+              {% if post.thumbnail_conteudo %}
+                <img src="{{ url_for('static', filename='uploads/' + post.thumbnail_conteudo) }}" alt="{{ post.titulo_conteudo }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(142, 45, 226, 0.3);" />
+              {% else %}
+                <div style="width: 40px; height: 40px; background: rgba(142, 45, 226, 0.2); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #8c46ff; font-size: 0.9rem;">
+                  <i class="fas fa-file-alt"></i>
+                </div>
+              {% endif %}
+              <button type="button" class="btn btn-link content-link" data-bs-toggle="modal" data-bs-target="#conteudoModal" data-id="{{ post.id_conteudo }}">{{ post.titulo_conteudo }}</button>
+            </div>
+          {% endif %}
+
+          <!-- 🔥 AVALIAÇÃO EM DESTAQUE 🔥 -->
+          <div class="post-content">
+            <p>{{ post.comentario }}</p>
+          </div>
+
+          <!-- Estrelas e data -->
+          <div class="post-rating">
+            {% for i in range(5) %}
+              {% if i < post.avaliacao %}
+                <i class="fas fa-star"></i>
+              {% else %}
+                <i class="far fa-star"></i>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <div class="post-date">{{ post.data_postagem.strftime('%d/%m/%Y às %H:%M') }}</div>
+
+          <!-- Botões de ação -->
+          <div class="d-flex gap-2 mt-3">
+            {% if session.tipo_usuario == 'admin' or session.id_usuario == post.id_usuario %}
+              <a href="{{ url_for('editar_post_mural', id_post=post.id_mural) }}" class="btn btn-edit btn-sm" role="button" aria-label="Editar avaliação de {{ post.titulo }}">Editar</a>
+              <form method="POST" action="{{ url_for('excluir_post_mural', id_post=post.id_mural) }}" style="display: inline-block;" onsubmit="return confirm('Tem certeza que deseja excluir esta avaliação?');">
+                <button type="submit" class="btn btn-delete btn-sm" aria-label="Excluir avaliação de {{ post.titulo }}">Excluir</button>
+              </form>
+            {% endif %}
+          </div>
+        </div>
+      {% else %}
+        <div class="text-center p-4">
+          <i class="fas fa-star-half fa-3x text-muted mb-3"></i>
+          <p class="lead text-white-75">Nenhuma avaliação ainda. Seja o primeiro a comentar!</p>
+          <a href="{{ url_for('criar_post_mural', id_conteudo=0) }}" class="btn btn-farol mt-2">Fazer uma Avaliação</a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="conteudoModal" tabindex="-1" aria-labelledby="conteudoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom">
+          <h5 class="modal-title text-white" id="conteudoModalLabel">Carregando...</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body modal-body-custom">
+          <div id="modal-expand-link" class="text-end mb-2" style="font-size: 0.9rem;"></div>
+          <div id="modal-content-area" class="mb-3"></div>
+          <p id="modalDescricao" class="text-white-75"></p>
+          <p><strong>Fonte:</strong> <span id="modalFonte" class="text-white-50"></span></p>
+          <div class="d-flex justify-content-center gap-3 mt-4">
+            <div id="modal-main-link"></div>
+            <div id="modal-recurso-adicional"></div>
+          </div>
+          <div id="modal-external-link" class="text-center mt-4"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script do modal -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const modal = document.getElementById('conteudoModal');
+      modal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const conteudoId = button.getAttribute('data-id');
+
+        // Limpar campos
+        ['conteudoModalLabel', 'modal-content-area', 'modalDescricao', 'modalFonte', 'modal-main-link', 'modal-recurso-adicional', 'modal-external-link']
+          .forEach(id => document.getElementById(id).innerHTML = '');
+
+        if (!conteudoId) return;
+
+        fetch(`/api/conteudo/${conteudoId}`)
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById('conteudoModalLabel').textContent = data.titulo || 'Título não disponível';
+            document.getElementById('modalDescricao').textContent = data.descricao || 'Sem descrição.';
+            document.getElementById('modalFonte').textContent = data.fonte || 'Não informada';
+
+            if (data.link_principal) {
+              document.getElementById('modal-main-link').innerHTML = `
+                <a href="${data.link_principal}" target="_blank" class="btn btn-primary btn-sm">Ver Conteúdo</a>`;
+            }
+
+            if (data.recurso_adicional) {
+              document.getElementById('modal-recurso-adicional').innerHTML = `
+                <a href="${data.recurso_adicional}" target="_blank" class="btn btn-outline-light btn-sm">Baixar Recurso</a>`;
+            }
+
+            if (data.link_externo) {
+              document.getElementById('modal-external-link').innerHTML = `
+                <a href="${data.link_externo}" target="_blank" class="text-white-75">Abrir em nova aba</a>`;
+            }
+
+            if (data.thumbnail) {
+              document.getElementById('modal-content-area').innerHTML = `
+                <img src="/static/uploads/${data.thumbnail}" alt="${data.titulo}" style="width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(142, 45, 226, 0.3);">`;
+            }
+          })
+          .catch(err => {
+            console.error('Erro:', err);
+            document.getElementById('conteudoModalLabel').textContent = 'Erro ao carregar';
+            document.getElementById('modalDescricao').textContent = 'Falha ao carregar os dados.';
+          });
+      });
+    });
+  </script>
+{% endblock %}

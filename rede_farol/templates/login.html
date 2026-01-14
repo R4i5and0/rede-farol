@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Login - Rede Farol
+{% endblock %}
+
+{% block content %}
+  <style>
+    .logout-message {
+      background: rgba(70, 255, 160, 0.15);
+      border: 1px solid #4affa0;
+      color: #4affa0;
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      animation: fadeIn 0.5s ease-in;
+    }
+    
+    .logout-message i {
+      font-size: 1.1rem;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .auth-box {
+      background: rgba(30, 15, 50, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(140, 70, 255, 0.3);
+      color: white;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    
+    .auth-box h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+    
+    .auth-box p {
+      color: #cccccc;
+      margin-bottom: 30px;
+    }
+    
+    .form-label {
+      color: #ffffff;
+      font-weight: 500;
+    }
+    
+    .form-control {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      border-radius: 10px;
+      padding: 12px;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: #8c46ff;
+      box-shadow: 0 0 15px rgba(140, 70, 255, 0.5);
+      color: white;
+    }
+    
+    .btn-farol {
+      width: 100%;
+      background: linear-gradient(135deg, #8c46ff, #d046ff);
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      color: white;
+      box-shadow: 0 5px 15px rgba(140, 70, 255, 0.4);
+    }
+    
+    .btn-farol:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(140, 70, 255, 0.6);
+    }
+    
+    .auth-link a {
+      color: #8c46ff;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+    
+    .auth-link a:hover {
+      color: #d046ff;
+    }
+    
+   .password-toggle-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #aaa;
+    transition: color 0.2s;
+    font-size: 1rem;
+    line-height: 1;
+    z-index: 10;
+    margin-top: 1px; /* ajuste fino se necessário */
+}
+.form-control {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 10px;
+    padding: 12px 40px 12px 12px;
+    transition: all 0.3s ease;
+    height: 48px;
+    width: 100%; /* garante largura total */
+}
+    .password-toggle-icon:hover {
+      color: #fff;
+    }
+   
+  </style>
+
+  <div class="container mt-5 pt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="auth-box">
+          <!-- Mensagem de logout personalizada -->
+          {% if request.args.get('logged_out') == '1' %}
+            <div class="logout-message">
+              <i class="fas fa-check-circle"></i>
+              Você saiu da sua conta.
+            </div>
+          {% endif %}
+
+          <h1>Acesse sua Conta</h1>
+          <p>Bem-vindo(a) de volta à Rede Farol!</p>
+
+          <form method="POST" action="{{ url_for('login') }}">
+            <div class="mb-3">
+              <label for="email" class="form-label">E-mail</label>
+              <input type="email" class="form-control" id="email" name="email" required placeholder="seu@email.com" />
+            </div>
+
+            <div class="mb-3 password-group position-relative">
+              <label for="senha" class="form-label">Senha</label>
+              <div class="position-relative">
+                <input type="password" class="form-control w-100" id="senha" name="senha" required placeholder="Sua senha" />
+                <i class="fas fa-eye password-toggle-icon" onclick="togglePassword('senha')"></i>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-farol">Entrar</button>
+          </form>
+
+          <div class="auth-link">
+            <p>
+              Não tem uma conta? <a href="{{ url_for('register') }}">Cadastre-se</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword(fieldId) {
+      const field = document.getElementById(fieldId)
+      const icon = field.nextElementSibling
+      if (field.type === 'password') {
+        field.type = 'text'
+        icon.classList.remove('fa-eye')
+        icon.classList.add('fa-eye-slash')
+      } else {
+        field.type = 'password'
+        icon.classList.remove('fa-eye-slash')
+        icon.classList.add('fa-eye')
+      }
+    }
+  </script>
+{% endblock %}

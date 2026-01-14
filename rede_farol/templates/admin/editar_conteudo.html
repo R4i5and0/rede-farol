@@ -1,0 +1,111 @@
+{% extends "admin/_layout.html" %}
+
+{% block title %}Editar Conteúdo{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="auth-box mx-auto" style="max-width: 800px;">
+        <h1 class="mb-4">Editar Conteúdo</h1>
+
+        <form method="POST" action="{{ url_for('editar_conteudo', id_conteudo=conteudo.id_conteudo) }}" enctype="multipart/form-data">
+            
+            <div class="mb-3 text-start">
+              <label for="titulo" class="form-label">Título</label>
+              <input type="text" class="form-control" id="titulo" name="titulo" value="{{ conteudo.titulo }}" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="descricao" class="form-label">Descrição</label>
+                <textarea class="form-control" id="descricao" name="descricao" rows="3">{{ conteudo.descricao }}</textarea>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3 text-start">
+                    <label for="tipo" class="form-label">Tipo de Conteúdo Principal</label>
+                    
+                    <!-- 
+                    ==================================================================
+                    == (CORRIGIDO) A lista agora é IDÊNTICA à de 'adicionar_conteudo.html'
+                    == e o 'if selected' usa os novos valores únicos.
+                    ==================================================================
+                    -->
+                    <select class="form-select form-control" id="tipo" name="tipo" required>
+                        <option value="video" {% if conteudo.tipo == 'video' %}selected{% endif %}>Vídeo</option>
+                        <option value="video_pdf" {% if conteudo.tipo == 'video_pdf' %}selected{% endif %}>Vídeo/PDF</option>
+                        <option value="video_audio" {% if conteudo.tipo == 'video_audio' %}selected{% endif %}>Vídeo/Áudio</option>
+                        <option value="pdf" {% if conteudo.tipo == 'pdf' %}selected{% endif %}>PDF</option>
+                        <option value="pdf_audio" {% if conteudo.tipo == 'pdf_audio' %}selected{% endif %}>PDF/Áudio</option>
+                        <option value="audio" {% if conteudo.tipo == 'audio' %}selected{% endif %}>Áudio</option>
+                        <option value="imagem" {% if conteudo.tipo == 'imagem' %}selected{% endif %}>Imagem</option>
+                        <option value="link" {% if conteudo.tipo == 'link' %}selected{% endif %}>Link Externo</option>
+                        <option value="dica" {% if conteudo.tipo == 'dica' %}selected{% endif %}>Dica Rápida</option>
+                    </select>
+                    <!-- Fim da Correção -->
+
+                </div>
+                <div class="col-md-6 mb-3 text-start">
+                    <label for="fonte" class="form-label">Fonte</label>
+                    <input type="text" class="form-control" id="fonte" name="fonte" value="{{ conteudo.fonte }}">
+                </div>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="url_arquivo" class="form-label">URL (Ex: Link do YouTube) (Opcional)</label>
+                <input type="text" class="form-control" id="url_arquivo" name="url_arquivo" value="{{ conteudo.url_arquivo or '' }}">
+                <small class="text-white-50">Use isto para links externos (Vídeo, Áudio, etc.)</small>
+            </div>
+
+            <div class="mb-3 text-start">
+                <label for="arquivo" class="form-label">Arquivo Principal (Vídeo/Áudio) (Opcional)</label>
+                <input type="file" class="form-control" id="arquivo" name="arquivo" accept=".mp4,.mp3,.webm,.ogg">
+                <small class="text-white-50">
+                    Arquivo atual: {{ conteudo.arquivo or 'Nenhum' }}. Deixe em branco para manter.
+                </small>
+            </div>
+            
+            <div class="mb-3 text-start">
+                <label for="arquivo_adicional" class="form-label">Arquivo Adicional (PDF/Cartilha) (Opcional)</label>
+                <input type="file" class="form-control" id="arquivo_adicional" name="arquivo_adicional" accept=".pdf">
+                <small class="text-white-50">
+                    Cartilha atual: {{ conteudo.url_recurso_adicional or 'Nenhuma' }}. Deixe em branco para manter.
+                </small>
+            </div>
+
+            <div class="mb-3 text-start">
+                <label for="thumbnail" class="form-label">Thumbnail (Imagem de Capa)</label>
+                <input type="file" class="form-control" id="thumbnail" name="thumbnail" accept="image/*">
+                <small class="text-white-50">
+                    Thumbnail atual: {{ conteudo.thumbnail or 'Nenhuma' }}. Deixe em branco para manter.
+                </small>
+            </div>
+
+            <div class="mb-3 text-start">
+                <label class="form-label">Categorias</label>
+                <div class="form-check-container p-3 rounded">
+                    {% for categoria in todas_as_categorias %}
+                    <div class="form-check">
+                        <input class="form-check-input" 
+                               type="checkbox" 
+                               value="{{ categoria.id_categoria }}" 
+                               id="categoria-{{ categoria.id_categoria }}" 
+                               name="categorias"
+                               {% if categoria.id_categoria in categorias_do_conteudo %}checked{% endif %}>
+                               
+                        <label class="form-check-label" for="categoria-{{ categoria.id_categoria }}">
+                            {{ categoria.nome_categoria }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+                <small class="text-white-50">Selecione uma ou mais categorias.</small>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-auto">
+                <button type="submit" class="btn btn-farol" style="width: auto;">Atualizar Conteúdo</button>
+              </div>
+              <div class="col-auto ms-auto">
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-farol" style="width: auto;">Cancelar</a>
+              </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+{% block title %} 
+    Seu Resultado 
+{% endblock %}
+
+{% block styles %}
+  {{ super() }}
+
+  <style>
+    .result-card {
+        background: rgba(20, 15, 30, 0.9);
+        border: 2px solid 
+            {% if perfil == 'Guardião Digital' %}#00ff88{% elif perfil == 'Cauteloso' %}#ffcc00{% else %}#ff3333{% endif %};
+        border-radius: 20px;
+        padding: 30px;
+        max-width: 600px;
+        margin: 0 auto;
+        box-shadow: 0 0 30px rgba(142, 45, 226, 0.3);
+        color: #fff;
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-pulse {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.1); opacity: 0.8; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    .profile-icon {
+        font-size: 5rem;
+        margin-bottom: 20px;
+    }
+
+    .btn-farol {
+        background: linear-gradient(135deg, #8e2de2, #4a00e0);
+        border: none;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 30px;
+        font-weight: bold;
+        transition: all 0.3s;
+    }
+
+    .btn-farol:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px rgba(142, 45, 226, 0.5);
+    }
+
+    .btn-outline-light {
+        border: 2px solid #ccc;
+        color: #ccc;
+        padding: 12px 25px;
+        border-radius: 30px;
+        font-weight: bold;
+        transition: all 0.3s;
+    }
+
+    .btn-outline-light:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: #fff;
+        color: #fff;
+    }
+
+    .result-header {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .result-header h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    .result-header p {
+        color: #cccccc;
+        font-size: 1.1rem;
+    }
+
+    .score-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .recommendation {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        border-left: 4px solid 
+            {% if perfil == 'Guardião Digital' %}#00ff88{% elif perfil == 'Cauteloso' %}#ffcc00{% else %}#ff3333{% endif %};
+        border-radius: 8px;
+        margin-top: 20px;
+    }
+
+    .recommendation strong {
+        color: 
+            {% if perfil == 'Guardião Digital' %}#00ff88{% elif perfil == 'Cauteloso' %}#ffcc00{% else %}#ff3333{% endif %};
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <!-- Hero Section -->
+  <div class="hero-content hero-content-box mx-auto text-center mb-4">
+    <h1 class="neon-float-title">Resultado do Diagnóstico 🌅</h1>
+    <p class="lead">
+      Analisamos suas respostas e calculamos seu perfil de segurança
+    </p>
+  </div>
+
+  <!-- CARD DE RESULTADO -->
+  <div class="result-card">
+
+    <!-- ÍCONE -->
+    <div class="text-center mb-4">
+      {% if perfil == 'Guardião Digital' %}
+        <i class="fas fa-medal profile-icon text-success animate-pulse"></i>
+      {% elif perfil == 'Cauteloso' %}
+        <i class="fas fa-user-shield profile-icon text-warning"></i>
+      {% else %}
+        <i class="fas fa-exclamation-triangle profile-icon text-danger animate-pulse"></i>
+      {% endif %}
+    </div>
+
+    <!-- PERFIL -->
+    <h2 class="display-4 fw-bold text-white text-center mb-3">
+      {{ perfil }}
+    </h2>
+
+    <!-- PONTUAÇÃO -->
+    <div class="text-center mb-4">
+      <span class="score-badge">Pontuação Geral: {{ score }}%</span>
+    </div>
+
+    <hr class="border-secondary my-4">
+
+    <!-- EXPLICAÇÃO -->
+    <div class="text-start text-white-75">
+      {% if perfil == 'Guardião Digital' %}
+        <h5 class="text-success"><i class="fas fa-check-circle me-2"></i> Parabéns, você é um Guardião Digital! 🛡️</h5>
+        <p>Você tem hábitos incríveis de segurança — senhas fortes, cuidado com golpes e uso consciente da tecnologia. Isso é raro e valioso!</p>
+        <p class="mt-2">👉 Dica extra: Ative a verificação em duas etapas em todos os seus serviços. Mesmo os mais seguros podem ser atacados — e essa camada adicional salva vidas digitais!</p>
+      {% elif perfil == 'Cauteloso' %}
+        <h5 class="text-warning"><i class="fas fa-exclamation-circle me-2"></i> Cuidado, Cauteloso! ⚠️</h5>
+        <p>Você está no caminho certo, mas tem alguns pontos que precisam de atenção — especialmente nas senhas e no uso de Wi-Fi público.</p>
+        <p class="mt-2">👉 Dica prática: Use um gerenciador de senhas (como o Bitwarden ou KeePass) e nunca acesse bancos em redes públicas. Seu celular com 4G/5G é muito mais seguro!</p>
+      {% else %}
+        <h5 class="text-danger"><i class="fas fa-times-circle me-2"></i> Alerta Vermelho! 🚨</h5>
+        <p>Você está em risco real — senhas fracas, reuso de senhas e confiança em links suspeitos são portas abertas para golpes.</p>
+        <p class="mt-2">👉 Ação imediata: Mude todas as suas senhas hoje mesmo, use uma diferente para cada serviço, e ative a autenticação de dois fatores. Você vai se surpreender com a diferença!</p>
+      {% endif %}
+    </div>
+
+    <!-- RECOMENDAÇÃO -->
+    {% if perfil == 'Cauteloso' %}
+      <div class="recommendation mt-4">
+        <strong>Recomendação:</strong> Revise nossa dica sobre "Senhas Fortes" no Dashboard.
+      </div>
+    {% elif perfil == 'Risco Elevado' %}
+      <div class="recommendation mt-4">
+        <strong>Ação Imediata:</strong> Ative a verificação em duas etapas em tudo e pare de repetir senhas agora mesmo.
+      </div>
+    {% endif %}
+
+    <!-- BOTÕES -->
+    <div class="mt-5 d-flex justify-content-center gap-3">
+      <a href="{{ url_for('dashboard_usuario') }}" class="btn btn-farol">
+        <i class="fas fa-chart-pie me-2"></i> Ver Gráficos Detalhados
+      </a>
+      <a href="{{ url_for('diagnostico') }}" class="btn btn-outline-light">
+        <i class="fas fa-redo me-2"></i> Refazer Teste
+      </a>
+    </div>
+
+  </div>
+
+{% endblock %}

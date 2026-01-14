@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <!-- Hero Section -->
+  
+
+  <div class="hero-content hero-content-box mx-auto text-center mb-4">
+            <h1 class="neon-float-title">Olá! Sou o Rede Farol 😊 </h1>
+            <p class="lead">
+               Sua luz na segurança digital. Protegendo quem mais precisa com informação e orientação.
+            </p>
+            <a href="{{ url_for('dashboard_usuario') }}" class="btn btn-farol">Ver Dashboard de Ameaças</a>
+        </div>
+
+  <!--    
+==================================================================
+== (CORREÇÃO) Seção Sobre (SEM o container extra)
+== Esta seção já se centraliza sozinha pelo CSS
+
+<div class="card h-100 card-link-wrapper" data-bs-toggle="modal" data-bs-target="#modalPai">
+==================================================================
+   -->
+  <div class="about-section mt-5">
+    <div class="row">
+      <!-- Coluna 1: A Missão -->
+      <div class="col-lg-6 mb-3 mb-lg-0" class="card shadow-lg">
+        <h3><i class="fas fa-crosshairs me-3 text-warning"></i> Nossa Missão</h3>
+        <p>A internet pode ser um lugar intimidador. Golpes, notícias falsas e riscos à privacidade são reais. A Rede Farol nasceu para ser essa luz.</p>
+        <p>
+          Acreditamos que a segurança digital não deve ser um privilégio de especialistas, mas um direito de todos. Nossa missão é <strong>traduzir o "tecniquês"</strong> em conselhos simples, práticos e acolhedores, capacitando quem mais precisa a navegar com confiança.
+        </p>
+      </div>
+
+      <!-- Coluna 2: O Projeto -->
+      <div class="col-lg-6">
+        <h3><i class="fas fa-graduation-cap me-3 text-info"></i> Sobre este Projeto</h3>
+        <p>
+          Esta plataforma é um <strong>Site de Conclusão do Curso Projeto Aplicado em Desenvolvimento de Sistemas </strong>. O objetivo foi criar uma ferramenta com um propósito social real: proteger os mais vulneráveis no ambiente digital.
+        </p>
+        <p>
+          Tudo o que você vê – desde a <strong>Curadoria de Conteúdo</strong> (com filtros por categoria) até o <strong>Assistente de IA (Chatbot)</strong> treinado para ser acolhedor – foi desenvolvido como parte deste projeto acadêmico, pensando em como a tecnologia pode servir e educar.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!--    
+==================================================================
+== (CORREÇÃO) Seção Cards (DENTRO de um container-xl)
+== Os cards precisam de um container para não grudarem na borda
+==================================================================
+   -->
+  <div class="container-xl my-3">
+    <div class="row g-4">
+      <!-- Card 1: Idosos e Leigos -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 card-link-wrapper" data-bs-toggle="modal" data-bs-target="#modalIdoso">
+          <!-- (CORREÇÃO) Adicionado 'text-center' para alinhar -->
+          <div class="card-body d-flex flex-column text-center">
+            <i class="fas fa-user-shield fa-3x mb-3 text-warning"></i>
+            <h5 class="card-title">Idosos e Leigos</h5>
+            <p class="card-text flex-grow-1">Como identificar a "pescaria digital" (Phishing), golpes de app falso e o que fazer.</p>
+            <span class="btn-link-farol">Clique para saber mais</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Crianças e Adolescentes -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 card-link-wrapper" data-bs-toggle="modal" data-bs-target="#modalCrianca">
+          <!-- (CORREÇÃO) Adicionado 'text-center' para alinhar -->
+          <div class="card-body d-flex flex-column text-center">
+            <i class="fas fa-child fa-3x mb-3 text-info"></i>
+            <h5 class="card-title">Crianças e Adolescentes</h5>
+            <p class="card-text flex-grow-1">Os perigos do Telegram e Discord, e como se proteger de estranhos e do cyberbullying.</p>
+            <span class="btn-link-farol">Clique para saber mais</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Pais e Responsáveis -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 card-link-wrapper" data-bs-toggle="modal" data-bs-target="#modalPai">
+          <!-- (CORREÇÃO) Adicionado 'text-center' para alinhar -->
+          <div class="card-body d-flex flex-column text-center">
+            <i class="fas fa-users fa-3x mb-3 text-success"></i>
+            <h5 class="card-title">Pais e Responsáveis</h5>
+            <p class="card-text flex-grow-1">Seu filho é mais velho e não respeita o tempo de tela? Veja dicas de diálogo e ferramentas.</p>
+            <span class="btn-link-farol">Clique para saber mais</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modais (Não mudei nada aqui) -->
+  <div class="modal fade" id="modalIdoso" tabindex="-1" aria-labelledby="modalIdosoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom">
+          <h5 class="modal-title" id="modalIdosoLabel"><i class="fas fa-user-shield me-2"></i> Para Idosos e Leigos</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body modal-body-custom">
+          <h6 class="text-white">Você está aqui porque quer aprender a usar a internet com segurança. Isso é ótimo!</h6>
+          <p class="mt-3">Nós entendemos que a tecnologia pode parecer complicada. Por isso, criamos estas dicas simples:</p>
+          <ul>
+            <li>
+              <strong>Phishing = Pescaria Digital</strong>: São mensagens que fingem ser de bancos, lojas ou serviços para roubar suas senhas. Nunca clique em links desconhecidos.
+            </li>
+            <li>
+              <strong>Golpe do Falso Suporte Técnico</strong>: Alguém liga dizendo que seu computador está infectado. NUNCA dê acesso remoto a desconhecidos!
+            </li>
+            <li>
+              <strong>WhatsApp e SMS Falsos</strong>: Mensagens prometendo prêmios ou avisos de bloqueio. É golpe para coletar seus contatos ou dados.
+            </li>
+          </ul>
+          <p class="mt-3">Se você quiser, podemos te mostrar passo a passo como ativar a verificação de duas etapas no seu celular ou banco.</p>
+          <p class="mt-3">Clique em “Quero aprender” e nosso assistente de IA vai te guiar com paciência.</p>
+          <div class="text-center mt-4">
+            <a href="{{ url_for('chatbot_page') }}" class="btn btn-farol">Quero aprender com o Assistente</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalCrianca" tabindex="-1" aria-labelledby="modalCriancaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom">
+          <h5 class="modal-title" id="modalCriancaLabel"><i class="fas fa-child me-2"></i> Para Crianças e Adolescentes</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body modal-body-custom">
+          <h6 class="text-white">Você está aqui porque quer saber como se proteger online. Isso é muito inteligente!</h6>
+          <p class="mt-3">Aqui estão algumas dicas importantes:</p>
+          <ul>
+            <li>
+              <strong>Privacidade nas Redes Sociais</strong>: Configure seu perfil para “privado”. Só amigos próximos devem ver suas fotos e posts.
+            </li>
+            <li>
+              <strong>Cyberbullying</strong>: Se alguém estiver te ofendendo online, salve as provas e conte para um adulto de confiança. Você não está sozinho(a).
+            </li>
+            <li>
+              <strong>Jogos e Apps Perigosos</strong>: Evite baixar jogos de sites desconhecidos. Eles podem roubar suas informações ou colocar vírus no seu dispositivo.
+            </li>
+          </ul>
+          <p class="mt-3">Se você quiser, podemos te mostrar como configurar o controle parental no seu celular ou computador.</p>
+          <p class="mt-3">Clique em “Quero aprender” e nosso assistente de IA vai te guiar com calma.</p>
+          <div class="text-center mt-4">
+            <a href="{{ url_for('chatbot_page') }}" class="btn btn-farol">Quero aprender com o Assistente</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalPai" tabindex="-1" aria-labelledby="modalPaiLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom">
+          <h5 class="modal-title" id="modalPaiLabel"><i class="fas fa-users me-2"></i> Para Pais e Responsáveis</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body modal-body-custom">
+          <h6 class="text-white">Você está aqui porque quer proteger seu filho(a) na internet. Isso é essencial!</h6>
+          <p class="mt-3">Aqui estão algumas dicas práticas:</p>
+          <ul>
+            <li>
+              <strong>Controle Parental</strong>: Use ferramentas como Google Family Link ou Screen Time do iPhone para limitar o tempo de tela e bloquear apps perigosos.
+            </li>
+            <li>
+              <strong>Conversa Aberta</strong>: Não espere acontecer algo ruim para conversar. Fale sobre os riscos com naturalidade, sem julgamentos.
+            </li>
+            <li>
+              <strong>Quando o Filho é Mais Velho</strong>: Se ele já é adolescente e não respeita o tempo de tela, tente negociar. Exemplo: “Você pode ficar 2 horas no jogo se terminar a lição de casa.”
+            </li>
+          </ul>
+          <p class="mt-3">Se você quiser, podemos te mostrar como configurar o controle parental no seu celular ou computador.</p>
+          <p class="mt-3">Clique em “Quero aprender” e nosso assistente de IA vai te guiar com calma.</p>
+          <div class="text-center mt-4">
+            <a href="{{ url_for('chatbot_page') }}" class="btn btn-farol">Quero aprender com o Assistente</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--    
+==================================================================
+== (CORREÇÃO) Seção CTA (SEM o container extra)
+== Esta seção também já se centraliza sozinha pelo CSS
+==================================================================
+   -->
+  <div class="cta-section my-3">
+    <h2 class="text-white fw-bold">Conheça Nossas Ferramentas Gratuitas</h2>
+    <p>O melhor da Rede Farol está na área de membros. Cadastre-se para ter acesso:</p>
+
+    {% if session.logged_in %}
+      <a href="{{ url_for('listar_conteudos') }}" class="btn btn-farol">Ver Curadoria de Conteúdo</a>
+      <a href="{{ url_for('chatbot_page') }}" class="btn btn-farol">Falar com Assistente de IA</a>
+    {% else %}
+      <a href="{{ url_for('register') }}" class="btn btn-farol">Quero me Cadastrar</a>
+    {% endif %}
+  </div>
+{% endblock %}

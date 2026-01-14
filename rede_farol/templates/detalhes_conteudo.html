@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ conteudo.titulo }} - Conteúdo {% endblock %}
+
+{% block content %}
+<style>
+    /* Estilo de card de destaque para o conteúdo */
+    .content-detail-card {
+        background: rgba(20, 15, 30, 0.9);
+        border: 2px solid rgba(142, 45, 226, 0.6);
+        border-radius: 15px;
+        padding: 40px;
+        color: #fff;
+        box-shadow: 0 0 15px rgba(142, 45, 226, 0.3);
+        margin-top: 40px; 
+        position: relative; 
+    }
+    .content-detail-card h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #fff;
+        text-shadow: 0 0 10px rgba(142, 45, 226, 0.5);
+    }
+    /* Faixa de destaque roxa no topo para o cabeçalho (semelhante ao modal) */
+    .content-detail-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px; 
+        background: linear-gradient(90deg, #8e2de2, #4a00e0);
+        border-top-left-radius: 13px;
+        border-top-right-radius: 13px;
+    }
+    .content-category-tag {
+        display: inline-block;
+        background-color: rgba(0, 255, 255, 0.1);
+        color: #00ffff;
+        padding: 5px 10px;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+    }
+    .btn-farol-download {
+        background: linear-gradient(135deg, #00ff88, #00b36e); /* Verde Neon */
+        border: none;
+        color: #1a1a2e;
+        font-weight: bold;
+        transition: transform 0.2s;
+    }
+    .btn-farol-download:hover {
+        transform: translateY(-2px);
+    }
+    .text-content-area {
+        line-height: 1.8;
+        font-size: 1.1rem;
+        color: #e0e0e0;
+        white-space: pre-wrap; 
+    }
+    /* Estilo para a caixa de metadados */
+    .metadata-box {
+        padding-top: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1); /* Linha divisória sutil */
+        color: #a0a0a0; /* Cor mais clara/cinza para parecer secundário */
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="content-detail-card">
+            
+            <h1 class="text-center">{{ conteudo.titulo }}</h1>
+            
+            <div class="text-center mb-5">
+                {% if categorias %}
+                    {% for cat in categorias %}
+                        <span class="content-category-tag">{{ cat.nome_categoria }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            {% if 'youtube.com' in conteudo.url_arquivo or 'youtu.be' in conteudo.url_arquivo %}
+                {% set video_id = conteudo.url_arquivo.split('v=')[-1].split('&')[0] %}
+                <div class="ratio ratio-16x9 mb-4 shadow-lg" style="border-radius: 10px;">
+                    <iframe src="https://www.youtube.com/embed/{{ video_id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 10px;"></iframe>
+                </div>
+            {% endif %}
+
+            <div class="text-content-area mb-4">
+                {{ conteudo.descricao }}
+            </div>
+
+            <div class="metadata-box">
+                <i class="fas fa-info-circle me-2"></i> Fonte: {{ conteudo.fonte or 'Não especificada' }} | Publicado em: {{ conteudo.data_publicacao.strftime('%d/%m/%Y') }}
+            </div>
+
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                
+                {% if conteudo.url_recurso_adicional %}
+                    <a href="{{ url_for('static', filename='uploads/' ~ conteudo.url_recurso_adicional) }}" class="btn btn-lg btn-farol-download shadow-lg">
+                        <i class="fas fa-file-pdf me-2"></i> Baixar Cartilha (PDF)
+                    </a>
+                {% endif %}
+                
+                {% if conteudo.arquivo and ('video' in conteudo.tipo|lower or 'audio' in conteudo.tipo|lower) %}
+                    <a href="{{ url_for('static', filename='uploads/' ~ conteudo.arquivo) }}" class="btn btn-lg btn-outline-success">
+                        <i class="fas fa-video me-2"></i> Assistir Vídeo (Local)
+                    </a>
+                {% endif %}
+
+                {% if conteudo.url_arquivo and 'youtube.com' not in conteudo.url_arquivo and 'youtu.be' not in conteudo.url_arquivo %}
+                    <a href="{{ conteudo.url_arquivo }}" target="_blank" class="btn btn-lg btn-outline-warning">
+                        <i class="fas fa-external-link-alt me-2"></i> Ver Conteúdo Externo
+                    </a>
+                {% endif %}
+                
+                {% if session.tipo_usuario == 'admin' %}
+                    <a href="{{ url_for('editar_conteudo', id_conteudo=conteudo.id_conteudo) }}" class="btn btn-lg btn-outline-primary">
+                        <i class="fas fa-edit me-2"></i> Editar
+                    </a>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

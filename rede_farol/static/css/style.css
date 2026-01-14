@@ -1,0 +1,3018 @@
+/* =================================================================== */
+/* === ARQUIVO: static/css/style.css (VERSÃO REFAZIDA - PARTE 1/3) === */
+/* =================================================================== */
+
+/* --- Importação da Fonte --- */
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Poppins:wght@300;400;700&display=swap');
+
+/* --- Variáveis de Cores e Estilos --- */
+:root {
+    /* Paleta de Cores */
+    --farol-roxo-escuro: #120d1f;
+    --farol-roxo-meio: #1c2c4c;
+    --farol-roxo-claro: #3B2A6B;
+    --farol-amarelo-destaque: #FFD700;
+    --farol-rosa-destaque: #ff0080;
+    --farol-roxo-vibrante: #8e2de2;
+    --farol-roxo-principal: #4a00e0;
+    --farol-branco-claro: #e0e0e0;
+    --farol-branco-fundo: #f0f0f0;
+    --farol-cinza-texto: #d0d0d0;
+    --farol-dourado-texto: #f5e9a3;
+    --farol-branco-fundo: #fff;
+    --farol-cinza-texto: #ccc;
+    --farol-dourado-texto: #ffc107;
+    --btn-primary-bg: #6f42c1;
+    --bg-form: rgba(30, 30, 50, 0.7);
+    --border-form: #555;
+    --border-card: rgba(100, 100, 200, 0.3);
+    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --border-radius: 16px;
+
+    /* Cores de Fundo */
+    --bg-primary: radial-gradient(ellipse at center, var(--farol-roxo-meio) 0%, var(--farol-roxo-escuro) 75%);
+    --bg-card: rgba(20, 15, 30, 0.5);
+    --bg-card-hover: rgba(30, 15, 40, 0.7);
+    --bg-modal: rgba(20, 15, 30, 0.95);
+    --bg-auth: rgba(30, 10, 50, 0.8);
+    --bg-form: rgba(255, 255, 255, 0.1);
+
+    /* Cores de Borda */
+    --border-card: rgba(142, 45, 226, 0.4);
+    --border-card-hover: var(--farol-amarelo-destaque);
+    --border-modal: rgba(142, 45, 226, 0.6);
+    --border-form: rgba(255, 255, 255, 0.2);
+
+    /* Cores de Botões */
+    --btn-primary-bg: linear-gradient(45deg, var(--farol-roxo-principal), var(--farol-roxo-vibrante), var(--farol-rosa-destaque));
+    --btn-primary-hover-bg: linear-gradient(135deg, var(--farol-roxo-vibrante), var(--farol-rosa-destaque));
+    --btn-secondary-bg: transparent;
+    --btn-secondary-border: var(--farol-roxo-vibrante);
+    --btn-secondary-hover-bg: var(--btn-primary-bg);
+    --btn-secondary-hover-color: white;
+
+    /* Sombra */
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --shadow-card-hover: 0 10px 25px rgba(255, 215, 0, 0.2);
+    --shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+    /* Espaçamento */
+    --border-radius: 15px;
+    --border-radius-sm: 10px;
+    --border-radius-xs: 5px;
+
+    /* Fontes */
+    --font-primary: 'Poppins', sans-serif;
+    --font-title: 'Lora', serif;
+    --font-size-base: 1rem;
+    --font-size-sm: 0.9rem;
+    --font-size-xs: 0.85rem;
+}
+
+/* --- Reset Básico e Padrões do HTML/Body --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    font-family: var(--font-primary);
+    background: var(--bg-primary);
+    color: var(--farol-branco-claro);
+    overflow-x: hidden;
+}
+
+body {
+    height: 100%;
+    line-height: 1.6;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Wrapper principal que "empurra" o footer para baixo */
+.content-wrap {
+    flex-grow: 1;
+}
+
+/* --- Elementos de Fundo (Estrelas e Imagem) --- */
+#stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    pointer-events: none;
+}
+
+.page-background-image {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    z-index: -1;
+    width: 50%;
+    max-width: 800px;
+    left: 50%;
+    transform: translateX(-50%);
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.10;
+    filter: brightness(0.8) contrast(1.2);
+}
+
+@media (max-width: 768px) {
+    .page-background-image {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* =================================================================== */
+/* 2. NAVEGAÇÃO E FOOTER */
+/* =================================================================== */
+
+/* --- Barra de Navegação (Navbar) --- */
+.navbar {
+    background-color: rgba(10, 5, 20, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-card);
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: var(--farol-branco-fundo);
+    text-shadow: 0 0 8px rgba(255, 100, 200, 0.6), 0 0 12px rgba(142, 45, 226, 0.5);
+    transition: all 0.3s ease;
+    font-family: var(--font-title);
+}
+
+.navbar-brand:hover {
+    text-shadow: 0 0 12px rgba(255, 100, 200, 0.9), 0 0 18px rgba(142, 45, 226, 0.8);
+}
+
+.navbar-nav .nav-link {
+    color: var(--farol-cinza-texto);
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 6px;
+    font-weight: 400;
+    font-size: var(--font-size-sm);
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--farol-amarelo-destaque);
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+    border-bottom-color: var(--farol-amarelo-destaque);
+}
+
+/* --- Menu Dropdown --- */
+.dropdown-menu {
+    background-color: rgba(30, 20, 50, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-card);
+    border-radius: var(--border-radius-sm);
+    padding: 0.5rem 0;
+}
+
+.dropdown-item {
+    color: var(--farol-cinza-texto);
+    transition: all 0.2s ease-in-out;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(142, 45, 226, 0.3);
+    color: #fff;
+}
+
+.dropdown-divider {
+    border-top: 1px solid var(--border-card);
+}
+
+/* =============================
+   FOOTER GROSSO E CENTRALIZADO (COM A ANIMAÇÃO QUE VOCÊ GOSTA)
+   ============================= */
+
+.bg-footer {
+    background-color: rgba(10, 5, 20, 0.8);
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.5);
+    color: #ccc;
+    z-index: 1040;
+    /* Abaixo do modal */
+
+    /* Torna o footer mais grosso */
+    padding: 1.2rem 0;
+    /* Aumenta o espaço interno verticalmente */
+}
+
+/* Centraliza todo o conteúdo dentro do footer */
+.bg-footer .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    /* Espaço entre os blocos */
+}
+
+/* Texto de contato */
+.bg-footer p.mb-1 {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    text-align: center;
+    width: 100%;
+}
+
+/* Ícones sociais — centralizados */
+.bg-footer .d-flex.justify-content-center.gap-3 {
+    justify-content: center !important;
+    gap: 1rem !important;
+    width: 100%;
+}
+
+.social-icon {
+    color: #fff;
+    transition: all 0.3s ease;
+    padding: 6px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.social-icon:hover {
+    background: linear-gradient(45deg, #8e2de2, #4a00e0);
+    color: white;
+    transform: scale(1.1) rotate(10deg);
+    box-shadow: 0 0 15px rgba(142, 45, 226, 0.5);
+}
+
+/* Copyright */
+.bg-footer p.mb-0 {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    text-align: center;
+    width: 100%;
+}
+
+/* Links */
+.bg-footer a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.bg-footer a:hover {
+    color: var(--farol-amarelo-destaque);
+}
+
+/* Ajuste para evitar que o conteúdo fique escondido pelo navbar fixo */
+main.pt-5 {
+    padding-top: 5rem !important;
+}
+
+@media (max-width: 768px) {
+    main.pt-5 {
+        padding-top: 4rem !important;
+    }
+
+    .bg-footer {
+        padding: 1rem 0;
+    }
+
+    .bg-footer .social-icon {
+        font-size: 1rem;
+        padding: 4px;
+    }
+
+    .bg-footer p {
+        font-size: 0.75rem;
+    }
+
+    .bg-footer .d-flex.justify-content-center.gap-3 {
+        gap: 0.75rem !important;
+    }
+}
+
+/* =================================================================== */
+/* 3. COMPONENTES REUTILIZÁVEIS (Botões, Cards, Forms, Modal) */
+/* =================================================================== */
+
+/* --- Estilos de Botões --- */
+
+/* Botão Principal (Gradiente) */
+.btn-farol {
+    background: var(--btn-primary-bg);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    font-size: 1.1rem;
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s ease;
+    background-size: 200% 200%;
+    animation: gradient-animation 10s ease infinite;
+    text-decoration: none;
+    text-align: center;
+    width: auto;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.btn-farol:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+    animation: gradient-animation-hover 3s ease infinite alternate;
+    background-size: 200% 200%;
+    color: white;
+}
+
+/* Botão Secundário (Borda roxa) */
+.btn-farol-secondary {
+    font-weight: 600;
+    font-size: 1.05rem;
+    border: 2px solid var(--btn-secondary-border);
+    border-radius: calc(var(--border-radius-sm) + 2px);
+    padding: 12px 30px;
+    color: var(--farol-branco-fundo);
+    background-color: var(--btn-secondary-bg);
+    transition: all 0.4s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: var(--shadow-card);
+}
+
+.btn-farol-secondary:hover {
+    background: var(--btn-secondary-hover-bg);
+    border-color: transparent;
+    color: var(--btn-secondary-hover-color);
+    transform: translateY(-2px) scale(1.02);
+}
+
+.btn-farol-secondary i {
+    transition: all 0.4s ease;
+}
+
+.btn-farol-secondary:hover i {
+    transform: scale(1.1);
+}
+
+/* Botão "Cancelar" (Padrão cinza/transparente) */
+.btn-secondary {
+    font-weight: 500;
+    color: #ccc;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: var(--font-size-base);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    display: inline-block;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #fff;
+}
+
+form .btn-secondary {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.modal-footer .btn-secondary {
+    width: auto;
+    margin-top: 0;
+}
+
+/* --- Caixas de Formulário (Login, Cadastro, Admin) --- */
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Caixa principal com efeito de vidro */
+.auth-box {
+    background: var(--bg-auth);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    /* menor */
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    max-width: 600px;
+    /* diminui a largura */
+    text-align: center;
+    transition: transform 0.3s ease;
+    margin-bottom: 60px;
+    /* adiciona espaço abaixo */
+    border-color: var(--border-card-hover);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+    border: 1px solid var(--border-card);
+    border-radius: var(--border-radius);
+
+
+}
+
+.auth-box:hover {
+    transform: scale(1.02);
+}
+
+.auth-box h1 {
+    font-family: var(--font-title);
+    font-size: 2.5rem;
+    color: var(--farol-branco-fundo);
+    text-shadow: 0 0 10px rgba(142, 45, 226, 0.5);
+    margin-bottom: 10px;
+    animation: float 6s ease-in-out infinite;
+}
+
+.auth-box p {
+    color: var(--farol-cinza-texto);
+    font-size: var(--font-size-base);
+    margin-bottom: 30px;
+}
+
+.auth-box .form-label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 8px;
+    text-align: left;
+    display: block;
+}
+
+/* Campos de Input (Formulários) */
+.form-control {
+    background: var(--bg-form);
+    border: 1px solid var(--border-form);
+    color: white;
+    border-radius: var(--border-radius-sm);
+    padding: 12px 15px;
+    font-size: var(--font-size-base);
+    transition: all 0.3s ease;
+    width: 100%;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+    border: 1px solid var(--border-card);
+
+}
+
+/* --- Cor do Placeholder (Login/Forms) --- */
+.form-control::placeholder {
+    color: rgba(200, 170, 255, 0.6);
+    opacity: 1;
+}
+
+.form-control:-ms-input-placeholder {
+    color: rgba(200, 170, 255, 0.6);
+}
+
+.form-control::-ms-input-placeholder {
+    color: rgba(200, 170, 255, 0.6);
+}
+
+.form-control:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ff6b6b;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+    color: #fff;
+    opacity: 1;
+}
+
+/* Botão de "Mostrar Senha" */
+.password-group {
+    position: relative;
+}
+
+.password-group .form-control {
+    padding-right: 45px;
+}
+
+.password-toggle-icon {
+    position: absolute;
+    top: 60%;
+    transform: translateY(-50%);
+    right: 15px;
+    cursor: pointer;
+    color: #888;
+    z-index: 2;
+    font-size: 1rem;
+}
+
+.password-toggle-icon:hover {
+    color: #fff;
+}
+
+/* Link "Não tem conta? Cadastre-se" */
+.auth-link {
+    margin-top: 25px;
+    color: var(--farol-cinza-texto);
+}
+
+.auth-link a {
+    color: var(--farol-amarelo-destaque);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.auth-link a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* --- Ajuste de altura para botões em formulários --- */
+.auth-box .btn-farol,
+form .btn-farol {
+    margin-top: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: var(--font-size-base);
+}
+
+/* --- Componente de Card (Base) --- */
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-card);
+    color: #fff;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    border-radius: var(--border-radius);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    border-color: var(--border-card-hover);
+    box-shadow: var(--shadow-card-hover);
+}
+
+.card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 15px;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--farol-dourado-texto);
+    /* Dourado claro */
+}
+
+.card-text {
+    font-size: var(--font-size-sm);
+    color: var(--farol-cinza-texto);
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+/* --- Modal (Pop-up de Conteúdo) --- */
+.modal-content-custom {
+    background: var(--bg-modal);
+    border: 1px solid var(--border-modal);
+    border-radius: calc(var(--border-radius) + 5px);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-modal);
+    color: var(--farol-branco-claro);
+
+}
+
+.modal-header-custom {
+    padding: 1.5rem 1.5rem 0.5rem;
+    border-bottom: 1px solid var(--border-card);
+}
+
+.modal-title {
+    font-size: 1.5rem;
+}
+
+.modal-body-custom {
+    padding: 1rem 1.5rem 1.5rem;
+    /* 👇 impede o texto de vazar */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+}
+
+.modal-body-custom p {
+    color: var(--farol-branco-claro);
+}
+
+.modal-body-custom strong {
+    color: var(--farol-dourado-texto);
+    /* Dourado */
+}
+
+.btn-close-white {
+    filter: invert(1);
+    opacity: 0.7;
+}
+
+/* Animação de "Carregando..." do modal */
+.modal-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    color: var(--farol-branco-fundo);
+}
+
+.modal-loader .fas {
+    font-size: 3rem;
+    color: #9C4DFF;
+}
+
+.modal-loader p {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--farol-cinza-texto);
+}
+
+/* Link de Expansão (Abrir no YouTube) */
+.expandir-link-visivel {
+    background: var(--farol-roxo-principal);
+    color: white !important;
+    padding: 5px 10px;
+    border-radius: var(--border-radius-xs);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.expandir-link-visivel:hover {
+    background: var(--farol-rosa-destaque);
+    color: white !important;
+    text-decoration: none;
+    transform: scale(1.05);
+}
+
+/* --- Estilo para o Wrapper do Vídeo (Capa clicável) --- */
+.video-thumbnail-wrapper {
+    position: relative;
+    cursor: pointer;
+    background-color: #000;
+    border-radius: var(--border-radius-sm);
+    overflow: hidden;
+    margin-bottom: 15px;
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s ease;
+}
+
+.video-thumbnail-wrapper:hover {
+    box-shadow: 0 8px 25px rgba(142, 45, 226, 0.5);
+    transform: scale(1.01);
+}
+
+.video-thumbnail-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.video-thumbnail-wrapper:hover img {
+    opacity: 0.8;
+}
+
+.ratio {
+    background-color: black;
+}
+
+/* Estilo do PDF (Preview Bonito) */
+.pdf-preview-card {
+    position: relative;
+    border-radius: var(--border-radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--border-card);
+}
+
+.pdf-preview-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: grayscale(10%);
+    opacity: 0.9;
+}
+
+.pdf-preview-card:hover img {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+
+/* =============================
+   CARD DE CONTEÚDO — MODERNO E RESPONSIVO
+   ============================= */
+.conteudo-card {
+    background: rgba(20, 15, 30, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.conteudo-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(142, 45, 226, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.card-img-top {
+    height: 180px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.conteudo-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.card-title {
+    font-weight: 700;
+    color: white;
+    font-size: 1.1rem;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.card-text {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Botões dentro do card */
+.btn-like,
+.btn-view,
+.btn-rate {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 60px;
+    justify-content: center;
+}
+
+.btn-like {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-like:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.btn-like.voted {
+    background: rgba(255, 107, 107, 0.2);
+    border-color: rgba(255, 107, 107, 0.4);
+    color: #ff6b6b;
+}
+
+.btn-like.voted i {
+    color: #ff6b6b;
+}
+
+/* Efeito de brilho amarelo ao votar (como você pediu!) */
+.btn-like.voted::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+    border-radius: 20px;
+    pointer-events: none;
+    animation: glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.btn-view {
+    background: linear-gradient(45deg, #8e2de2, #4a00e0);
+    color: white;
+    border: none;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.btn-view:hover {
+    background: linear-gradient(135deg, #8e2de2, #ff0080);
+    transform: scale(1.05);
+}
+
+.btn-rate {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.btn-rate:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* =============================
+   BARBA LATERAL: OS MAIS POPULARES
+   ============================= */
+.card-sidebar {
+    background: rgba(20, 15, 30, 0.6);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+.card-sidebar .card-header {
+    background: rgba(10, 5, 20, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem 1.5rem;
+}
+
+.card-sidebar .card-header h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.popular-list {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--farol-amarelo-destaque) var(--farol-roxo-escuro);
+}
+
+.popular-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.popular-list::-webkit-scrollbar-track {
+    background: var(--farol-roxo-escuro);
+}
+
+.popular-list::-webkit-scrollbar-thumb {
+    background-color: var(--farol-amarelo-destaque);
+    border-radius: 10px;
+}
+
+.popular-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popular-item:last-child {
+    margin-bottom: 0;
+}
+
+.popular-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--farol-amarelo-destaque);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+.popular-item .badge {
+    font-size: 0.7rem;
+    padding: 3px 6px;
+    min-width: 24px;
+    text-align: center;
+}
+
+.popular-item .text-white {
+    font-size: 0.9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.popular-item .badge.bg-gradient-blue {
+    background: linear-gradient(45deg, #4a00e0, #8e2de2);
+    color: white;
+    font-size: 0.75rem;
+    padding: 3px 6px;
+}
+
+/* =============================
+   RESPONSIVIDADE — MOBILE & TABLET
+   ============================= */
+@media (max-width: 992px) {
+    .col-lg-8 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .col-lg-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .hero-content {
+        padding: 1.5rem;
+    }
+
+    .neon-float-title {
+        font-size: 2rem;
+    }
+
+    .filter-bar .btn {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+    }
+
+    .row-cols-md-3>.col {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 768px) {
+    .content-wrap {
+        padding: 1.5rem 0.5rem;
+    }
+
+    .hero-content {
+        padding: 1rem;
+    }
+
+    .neon-float-title {
+        font-size: 1.8rem;
+    }
+
+    .filter-bar {
+        gap: 0.25rem;
+    }
+
+    .filter-bar .btn {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+        min-height: 36px;
+    }
+
+    .card-img-top {
+        height: 150px;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .card-text {
+        font-size: 0.85rem;
+    }
+
+    .btn-like,
+    .btn-view,
+    .btn-rate {
+        font-size: 0.75rem;
+        padding: 5px 10px;
+        gap: 2px;
+    }
+
+    .popular-list {
+        max-height: 250px;
+    }
+
+    .popular-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .popular-item .badge {
+        font-size: 0.65rem;
+        padding: 2px 4px;
+    }
+
+    .popular-item .text-white {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .row-cols-sm-2>.col {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .hero-content p {
+        font-size: 0.9rem;
+    }
+
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+
+    .modal-content {
+        border-radius: 12px;
+    }
+}
+
+/* =============================
+   AJUSTES DE ESPAÇAMENTO E LAYOUT
+   ============================= */
+
+/* Aumenta o espaço entre os cards */
+.row.g-4 .col {
+    padding: 0.75rem;
+}
+
+/* Aumenta o tamanho dos cards em desktop */
+@media (min-width: 992px) {
+    .conteudo-card {
+        height: auto;
+        min-height: 600px;
+    }
+}
+
+/* Aumenta o espaçamento entre os botões */
+.btn-like,
+.btn-view,
+.btn-rate {
+    margin: 0 2px;
+}
+
+/* Ajusta o tamanho dos botões em mobile */
+@media (max-width: 768px) {
+
+    .btn-like,
+    .btn-view,
+    .btn-rate {
+        font-size: 0.75rem;
+        padding: 5px 10px;
+        gap: 2px;
+        margin: 0 1px;
+    }
+}
+
+/* Espaço extra na barra lateral */
+.card-sidebar {
+    margin-top: 1rem;
+}
+
+/* Melhora o espaçamento da barra de filtros */
+.filter-bar {
+    margin-bottom: 1.5rem;
+}
+
+.filter-bar .btn {
+    margin: 0.25rem;
+}
+
+/* Glassmorphism */
+.bg-glass {
+    background: rgba(20, 15, 30, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-card);
+}
+
+/* Título Neon Flutuante (alinha à esquerda) */
+.neon-title {
+    font-family: var(--font-title);
+    font-size: 1.8rem;
+    color: white;
+    text-shadow:
+        0 0 15px rgba(255, 100, 200, 0.9),
+        0 0 25px rgba(142, 45, 226, 0.9);
+    animation: float 6s ease-in-out infinite;
+    margin-bottom: 0 !important;
+    text-align: left;
+    /* Alinha à esquerda */
+}
+
+/* Campos de Input e Textarea */
+.form-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: var(--border-radius-sm);
+    padding: 10px 15px;
+    font-size: var(--font-size-base);
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.form-input::placeholder {
+    color: rgba(200, 170, 255, 0.6);
+    opacity: 1;
+}
+
+.form-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ff6b6b;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+    color: #fff;
+}
+
+/* Botões menores */
+.btn-farol.btn-sm,
+.btn-outline-farol.btn-sm {
+    padding: 8px 16px;
+    font-size: 0.95rem;
+    border-radius: var(--border-radius-sm);
+}
+
+.btn-farol.btn-sm {
+    width: auto;
+}
+
+.btn-outline-farol.btn-sm {
+    width: auto;
+}
+
+/* Botão "Enviar Avaliação" */
+.btn-farol {
+    background: var(--btn-primary-bg);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    font-size: 1.1rem;
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s ease;
+    background-size: 200% 200%;
+    animation: gradient-animation 10s ease infinite;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.btn-farol:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+    animation: gradient-animation-hover 3s ease infinite alternate;
+    background-size: 200% 200%;
+    color: white;
+}
+
+/* Botão "Voltar ao Mural" */
+.btn-outline-farol {
+    font-weight: 600;
+    font-size: 1.1rem;
+    border: 2px solid #9C4DFF;
+    border-radius: var(--border-radius-sm);
+    padding: 12px 30px;
+    color: var(--farol-branco-fundo);
+    background-color: transparent;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
+}
+
+.btn-outline-farol:hover {
+    background: var(--btn-primary-bg);
+    border-color: transparent;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* =================================================================== */
+/* 4. ESTILOS ESPECÍFICOS DE PÁGINAS (HOME / CONTEÚDO) */
+/* =================================================================== */
+
+/* --- Estilo Base do Hero (Home, Conteúdo, Sobre) --- */
+.hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 120px 20px 40px 20px;
+    /* Topo: 120px | Base: 40px */
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* CLASSE PADRÃO HERO-CONTENT (APLICA GLASSMORPHISM - Usado em Conteúdos/Sobre) */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    margin: 0 auto;
+    max-width: 1000px;
+    padding: 20px 30px;
+    border-radius: 15px;
+
+    /* Glassmorphism */
+    background: rgba(30, 30, 50, 0.5);
+    backdrop-filter: blur(10px);
+
+    /* Box-shadow leve para partículas suaves */
+    box-shadow:
+        0 0 10px rgba(155, 89, 182, 0.3),
+        0 0 20px rgba(142, 45, 226, 0.2),
+        0 0 30px rgba(155, 89, 182, 0.1);
+
+    /* Animação de flutuação */
+    animation: float 6s ease-in-out infinite;
+}
+
+.hero-content::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 20px;
+    pointer-events: none;
+    background: linear-gradient(45deg, rgba(155, 89, 182, 0.2), rgba(142, 45, 226, 0.2), rgba(155, 89, 182, 0.2));
+    filter: blur(10px);
+    animation: pulse 3s ease-in-out infinite alternate;
+    z-index: -1;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes pulse {
+    0% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.05); }
+    100% { opacity: 0.3; transform: scale(1); }
+}
+
+
+.hero-content .lead {
+    color: var(--farol-branco-fundo) !important;
+    font-size: 1.2rem;
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+    animation: none !important;
+    margin-top: 1.5rem;
+}
+
+/* Estilos de Texto dentro do Hero-Content Padrão (Sem Flutuação/Brilho Máximo) */
+.hero-content h1 {
+    font-family: var(--font-title);
+    font-size: 3rem;
+    /* Tamanho base menor (para conteúdos/sobre) */
+    color: var(--farol-branco-claro);
+    text-shadow: 0 0 10px rgba(142, 45, 226, 0.7);
+    margin-bottom: 0.5rem !important;
+    animation: none;
+}
+
+/* Caixa especial com partículas leves e flutuação */
+.hero-content-box {
+    position: relative;
+    z-index: 2;
+    margin: 0 auto;
+    max-width: 1000px;
+    padding: 20px 30px;
+    border-radius: 15px;
+
+    /* Glassmorphism */
+    background: rgba(30, 30, 50, 0.5);
+    backdrop-filter: blur(10px);
+
+    /* Box-shadow leve para partículas suaves */
+    box-shadow: 0 0 10px rgba(155, 89, 182, 0.3),
+                0 0 20px rgba(142, 45, 226, 0.2),
+                0 0 30px rgba(155, 89, 182, 0.1);
+
+    /* Animação de flutuação */
+    animation: float 6s ease-in-out infinite;
+}
+
+.hero-content-box::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 20px;
+    pointer-events: none;
+
+    /* Borda animada roxa clara */
+    background: linear-gradient(45deg, rgba(155, 89, 182, 0.2), rgba(142, 45, 226, 0.2), rgba(155, 89, 182, 0.2));
+    filter: blur(10px);
+    animation: pulse 3s ease-in-out infinite alternate;
+    z-index: -1;
+}
+
+/* Animação de flutuação */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Animação do brilho/borda */
+@keyframes pulse {
+    0% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.05); }
+    100% { opacity: 0.3; transform: scale(1); }
+}
+
+/* Textos dentro da caixa */
+.hero-content-box h1,
+.hero-content-box .lead {
+    color: var(--farol-branco-fundo);
+    text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+
+
+
+
+/* ---------------------------------------------------------------------------------- */
+/* ⭐ ESTILOS PARA PÁGINAS SEM GLASSMORPHISM (HOME e DASHBOARD) - BRILHO E FLUTUAÇÃO ⭐ */
+/* ---------------------------------------------------------------------------------- */
+/* 1. Remove a caixa opaca (Glassmorphism) */
+/* Aplica um espaçamento interno maior para garantir que o título não bata no topo */
+body.no-glass .hero-content,
+body.no-glass .hero-content.no-box {
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+    padding-top: 40px !important;
+    padding-bottom: 0 !important;
+    max-width: 800px;
+    position: relative;
+    border-radius: 15px;
+    z-index: 2;
+}
+
+/* Título H1 */
+body.no-glass .hero-content h1,
+body.no-glass .hero-content.no-box h1 {
+    font-size: 3.8rem;
+    color: white !important;
+    text-shadow: 0 0 15px rgba(255, 100, 200, 0.9), 0 0 25px rgba(142, 45, 226, 0.9);
+    animation: float 6s ease-in-out infinite;
+    margin-bottom: 1.5rem !important;
+}
+
+/* Texto branco grosso com brilho amarelo */
+body.no-glass .hero-content .lead,
+body.no-glass .hero-content.no-box .lead {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #FFFFFF !important;
+    text-shadow:
+        0 0 5px rgba(255, 223, 0, 0.4),
+        0 0 10px rgba(255, 223, 0, 0.2);
+    animation: floatGlowWhite 3s ease-in-out infinite alternate;
+}
+
+
+/* ---------------------------------------------------------------------------------- */
+/* ⭐ AJUSTE DE TÍTULO PARA PÁGINA DE CONTEÚDOS ⭐ */
+/* ---------------------------------------------------------------------------------- */
+/* Se a página de Conteúdos não usa .no-glass, aplique o brilho no H1 assim: */
+/* Para garantir o brilho e o tamanho, vamos aplicar o estilo Neon aqui também */
+.content-wrap .hero-content h1 {
+    font-size: 3.5rem;
+    color: white !important;
+    text-shadow: 0 0 15px rgba(255, 100, 200, 0.9), 0 0 25px rgba(142, 45, 226, 0.9);
+    margin-bottom: 1.5rem !important;
+}
+
+/* Slogan da Curadoria */
+.content-wrap .hero-content .lead {
+    font-size: 1.1rem;
+    color: var(--farol-branco-fundo) !important;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+    animation: none !important;
+}
+
+/* --- Container de Botões (Página de Conteúdos) - MANTIDO --- */
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px !important;
+}
+
+/* Estilo Base e Ativo dos Botões de Filtro (MANTIDO) */
+.filter-bar .btn.btn-outline-light {
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    color: var(--farol-branco-fundo);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: var(--font-size-sm);
+    transition: all 0.3s ease;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+.filter-bar .btn.btn-outline-light:hover {
+    color: #fff;
+    background-color: rgba(142, 45, 226, 0.2);
+    border-color: var(--farol-amarelo-destaque);
+    transform: translateY(-2px);
+}
+
+.filter-bar .btn.btn-farol-active {
+    background: var(--btn-primary-bg) !important;
+    color: white !important;
+    border-color: transparent !important;
+    box-shadow: 0 0 15px rgba(255, 107, 107, 0.7);
+    transform: scale(1.05);
+    font-weight: 700;
+}
+
+/* --- Página Home/Sobre: Seção "Sobre" (MANTER BOX) --- */
+.about-section {
+    background: rgba(20, 15, 30, 0.7);
+    border: 1px solid var(--border-card);
+    border-radius: calc(var(--border-radius) + 5px);
+    padding: 3rem;
+    margin: 1.5rem auto 3rem auto;
+    max-width: 1100px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.about-section:hover {
+    transform: translateY(-10px);
+    border-color: var(--border-card-hover);
+    box-shadow: var(--shadow-card-hover);
+}
+
+.about-section h3 {
+    font-family: var(--font-title);
+    font-weight: 700;
+    color: var(--farol-branco-fundo);
+    text-shadow: 0 0 10px rgba(142, 45, 226, 0.5);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-card);
+}
+
+.about-section h3 .fas {
+    font-size: 1.5rem;
+    color: var(--farol-amarelo-destaque);
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+    margin-right: 0.75rem;
+}
+
+.about-section p {
+    font-size: var(--font-size-base);
+    color: var(--farol-branco-fundo);
+    line-height: 1.7;
+    text-align: left;
+}
+
+.about-section p strong {
+    color: var(--farol-dourado-texto);
+    font-weight: 600;
+}
+
+/* --- Página Home: Seção CTA (Call to Action) --- */
+.cta-section {
+    background: rgba(20, 15, 30, 0.7);
+    border: 2px solid #9C4DFF;
+    border-radius: calc(var(--border-radius) + 5px);
+    padding: 2.5rem 3rem;
+    margin: 3rem auto 5rem auto;
+    max-width: 900px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+    box-shadow: 0 0 30px rgba(156, 77, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.cta-section:hover {
+    transform: translateY(-10px);
+    border-color: var(--border-card-hover);
+    box-shadow: 0 10px 30px rgba(156, 77, 255, 0.5);
+}
+
+.cta-section h2 {
+    font-family: var(--font-title);
+    font-weight: 700;
+    color: var(--farol-branco-fundo);
+    font-size: 2rem;
+    text-shadow: 0 0 10px rgba(142, 45, 226, 0.5);
+    margin-bottom: 0.5rem;
+}
+
+.cta-section p {
+    font-size: 1.1rem;
+    color: var(--farol-cinza-texto);
+    margin-bottom: 1.5rem;
+}
+
+.cta-section .btn-farol,
+.cta-section .btn-outline-farol {
+    margin: 0.5rem;
+}
+
+/* Botão de contorno (outline) */
+.btn-outline-farol {
+    font-weight: 600;
+    font-size: 1.1rem;
+    border: 2px solid #9C4DFF;
+    border-radius: var(--border-radius-sm);
+    padding: 12px 30px;
+    color: var(--farol-branco-fundo);
+    background-color: transparent;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-outline-farol:hover {
+    background: var(--btn-primary-bg);
+    border-color: transparent;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Link "Ver Detalhes" (dentro do card de conteúdo) */
+.btn-link-farol {
+    color: var(--farol-amarelo-destaque);
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-card);
+    width: 100%;
+    text-align: center;
+}
+
+.card:hover .btn-link-farol {
+    text-decoration: underline;
+    color: #fff;
+}
+
+/* --- Página Admin: Formulário --- */
+.form-check-container {
+    background: var(--bg-form);
+    border: 1px solid var(--border-form);
+    border-radius: var(--border-radius-sm);
+    padding: 1rem;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.form-check-container .form-check {
+    margin-bottom: 0.5rem;
+}
+
+.form-check-container .form-check-label {
+    color: var(--farol-branco-fundo);
+}
+
+.form-check-input {
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.form-check-input:checked {
+    background-color: #9C4DFF;
+    border-color: #9C4DFF;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(156, 77, 255, 0.3);
+}
+
+.form-control[type="file"] {
+    color: #ccc;
+}
+
+.form-control[type="file"]::file-selector-button {
+    background: rgba(142, 45, 226, 0.4);
+    border: 1px solid rgba(142, 45, 226, 0.8);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: var(--border-radius-xs);
+    margin-right: 15px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.form-control[type="file"]::file-selector-button:hover {
+    background: rgba(142, 45, 226, 0.6);
+}
+
+.form-select {
+    background-color: var(--bg-form);
+    color: #fff;
+    border-color: var(--border-card);
+}
+
+.form-select option {
+    background-color: var(--farol-roxo-escuro);
+    color: var(--farol-branco-claro);
+}
+
+/* --- Página Admin: Lista de Conteúdo (Dashboard) --- */
+.admin-content-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Card individual da lista de admin */
+.admin-content-card {
+    background: rgba(20, 15, 30, 0.7);
+    border: 1px solid var(--border-card);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.admin-content-card:hover {
+    border-color: var(--border-card-hover);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.admin-thumbnail {
+    width: 120px;
+    height: 70px;
+    object-fit: cover;
+}
+
+.admin-thumbnail-placeholder {
+    width: 120px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-form);
+}
+
+.admin-card-title {
+    color: var(--farol-branco-fundo);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+}
+
+.admin-card-desc {
+    font-size: var(--font-size-sm);
+    color: var(--farol-cinza-texto);
+    margin-bottom: 0.5rem;
+    max-width: 400px;
+}
+
+.admin-card-tags .badge {
+    font-size: 0.75rem;
+    margin-right: 0.25rem;
+    font-weight: 500;
+}
+
+/* Botões de Ação (Ver, Editar, Excluir) */
+.btn-farol-view,
+.btn-farol-edit,
+.btn-farol-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    color: #fff;
+    background-color: transparent;
+}
+
+.btn-farol-view {
+    border-color: #2ebfe4;
+    color: #2ebfe4;
+}
+
+.btn-farol-view:hover {
+    background-color: #2ebfe4;
+    box-shadow: 0 0 10px #2ebfe4;
+    color: #fff;
+}
+
+.btn-farol-edit {
+    border-color: var(--farol-amarelo-destaque);
+    color: var(--farol-amarelo-destaque);
+}
+
+.btn-farol-edit:hover {
+    background-color: var(--farol-amarelo-destaque);
+    box-shadow: 0 0 10px var(--farol-amarelo-destaque);
+    color: var(--farol-roxo-escuro);
+}
+
+.btn-farol-delete {
+    border-color: var(--farol-rosa-destaque);
+    color: var(--farol-rosa-destaque);
+}
+
+.btn-farol-delete:hover {
+    background-color: var(--farol-rosa-destaque);
+    box-shadow: 0 0 10px var(--farol-rosa-destaque);
+    color: #fff;
+}
+
+/* Tabela (Estilo antigo, mantido caso usado) */
+.table {
+    --bs-table-bg: rgba(20, 15, 30, 0.7);
+    --bs-table-border-color: var(--border-card);
+    --bs-table-hover-bg: rgba(30, 20, 50, 0.8);
+}
+
+.table th {
+    font-weight: 600;
+    color: var(--farol-dourado-texto);
+    /* Dourado para os cabeçalhos */
+}
+
+/* =============================
+   CONTAINER PRINCIPAL DO CHAT
+   ============================= */
+.col-lg-7.col-12 {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chat-main-container {
+  flex: 1; /* Ocupa todo o espaço disponível */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Empurra o analisador para baixo */
+  min-height: 0; /* Permite que o container encolha se necessário */
+}
+
+/* =============================
+   CAIXA DE CHAT - DESIGN REFINADO
+   ============================= */
+.chat-container {
+    background: rgba(20, 15, 30, 0.85);
+    border: 1px solid var(--border-card);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.chat-header {
+    background: rgba(10, 5, 20, 0.8);
+    color: var(--farol-branco-fundo);
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid var(--border-card);
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.chat-header h4 {
+    animation: float 6s ease-in-out infinite 0.2s;
+    text-shadow: 0 0 8px rgba(46, 191, 228, 0.5);
+    color: white !important;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    color: var(--farol-branco-fundo) !important;
+    min-height: 0;
+
+    /* SCROLLBAR CUSTOMIZADA (Mais elegante) */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 77, 255, 0.5) transparent;
+}
+
+.chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: rgba(156, 77, 255, 0.5);
+    border-radius: 10px;
+}
+
+.message {
+    padding: 0.85rem 1.4rem;
+    border-radius: 25px;
+    max-width: 85%;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    color: var(--farol-branco-fundo) !important;
+    font-size: 1.05rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.message.user {
+    background: var(--btn-primary-bg);
+    color: white !important;
+    align-self: flex-end;
+    border-bottom-right-radius: 8px;
+}
+
+.message.bot {
+    background-color: var(--bg-form);
+    color: var(--farol-branco-fundo) !important;
+    align-self: flex-start;
+    border-bottom-left-radius: 8px;
+    border: 1px solid rgba(100, 100, 200, 0.1);
+}
+
+.message.bot ul,
+.message.bot li {
+    color: var(--farol-branco-fundo) !important;
+    margin-top: 10px;
+}
+
+.message.bot strong {
+    color: var(--farol-dourado-texto);
+    font-weight: 700;
+}
+
+.chat-input {
+    display: flex;
+    padding: 1.5rem;
+    border-top: 1px solid var(--border-card);
+    flex-shrink: 0;
+}
+
+.chat-input .form-control {
+    background: var(--bg-form);
+    border-color: var(--border-form);
+    color: white;
+    padding: 12px 20px;
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.chat-input .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+    opacity: 1;
+}
+
+.chat-input .form-control:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #FF4B9A;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+}
+
+.chat-input .btn {
+    padding: 12px 20px;
+}
+
+.chat-input #chat-submit-button {
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    background: linear-gradient(135deg, #FF4B9A, #9C4DFF) !important;
+    font-size: 1rem;
+    padding: 12px 20px !important;
+    box-shadow: var(--shadow-card);
+    margin: 0;
+    transition: transform 0.2s;
+}
+
+.chat-input #chat-submit-button:hover {
+    transform: scale(1.05);
+}
+
+.chat-input #stop-button {
+    background: #dc3545 !important;
+    border: none;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    margin: 0;
+    padding: 12px 20px !important;
+    transition: transform 0.2s;
+}
+
+.chat-input #stop-button:hover {
+    transform: scale(1.05);
+}
+
+/* =============================
+   CAIXA DE ANÁLISE DE LINKS (FUTURISTA)
+   ============================= */
+/* --- Estilos para o Analisador Rápido de Links --- */
+
+.analise-link-container {
+
+    background: linear-gradient(145deg, rgba(20, 20, 40, 0.8), rgba(30, 30, 60, 0.7));
+    border: 1px solid rgba(100, 100, 200, 0.3);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 0 10px rgba(100, 100, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    position: relative;
+    margin-top: 2rem;
+}
+
+
+.analise-link-container h4 {
+    color: #7289da;
+    /* Cor para o título (pode ser um tom de azul/roxo para destaque) */
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.analise-link-container p {
+    color: #b9bbbe;
+    /* Cor de texto secundária/descrição */
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+}
+
+/* Estilização do Campo de Input (Input-Group) */
+
+.analise-link-container .form-control {
+    background-color: #2f3136;
+    /* Fundo do campo de input */
+    border: 1px solid #4f545c;
+    color: #dcddde;
+    /* Cor do texto digitado */
+    padding: 10px 15px;
+    border-right: none;
+    /* Remove a borda entre o input e o botão */
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    box-shadow: none !important;
+}
+
+
+/* Estilização do Botão Analisar */
+
+.analise-link-container .btn-warning {
+    /* Botão Analisar */
+    background-color: #f0b435;
+    /* Cor amarela/dourada forte */
+    color: #1e2124;
+    /* Texto escuro no botão */
+    border: 1px solid #f0b435;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.analise-link-container .btn-warning:hover {
+    background-color: #d19f2a;
+    /* Tom mais escuro no hover */
+    border-color: #d19f2a;
+    box-shadow: 0 0 8px rgba(240, 180, 53, 0.5);
+}
+
+/* Estilo para a mensagem inicial */
+#resultadoAnalise .text-white-50 {
+    color: #8e9297 !important;
+    /* Cor mais neutra para a dica */
+    font-style: italic;
+    padding-left: 5px;
+}
+
+
+/* Estilos para os ALERTS (Simulação de resultados) */
+
+.analise-link-container .alert-danger,
+.analise-link-container .alert-success,
+.analise-link-container .alert-info {
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin-top: 15px;
+}
+
+.analise-link-container .alert-danger {
+    background-color: #a3222e;
+    /* Fundo vermelho escuro */
+    border-color: #a3222e;
+    color: #fff;
+}
+
+.analise-link-container .alert-success {
+    background-color: #1c7430;
+    /* Fundo verde escuro */
+    border-color: #1c7430;
+    color: #fff;
+}
+
+
+.alert-danger {
+    background: rgba(220, 53, 69, 0.15);
+    border: 1px solid #dc3545;
+    color: #ffcccc;
+    padding: 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    animation: pulseRed 1.5s infinite;
+}
+
+.alert-success {
+    background: rgba(40, 167, 69, 0.15);
+    border: 1px solid #28a745;
+    color: #d4edda;
+    padding: 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    animation: pulseGreen 1.5s infinite;
+}
+
+.alert-info {
+    background: rgba(23, 162, 184, 0.15);
+    border: 1px solid #17a2b8;
+    color: #cce5eb;
+    padding: 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    animation: pulseBlue 1.5s infinite;
+}
+
+@keyframes pulseRed {
+    0% {
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+    }
+}
+
+@keyframes pulseGreen {
+    0% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+    }
+}
+
+@keyframes pulseBlue {
+    0% {
+        box-shadow: 0 0 0 0 rgba(23, 162, 184, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(23, 162, 184, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(23, 162, 184, 0);
+    }
+}
+
+.alert-danger::before {
+    content: "⚠️";
+    font-size: 1.3rem;
+    animation: shake 0.5s ease-in-out infinite;
+}
+
+.alert-success::before {
+    content: "✅";
+    font-size: 1.3rem;
+    animation: bounce 0.5s ease-in-out infinite;
+}
+
+.alert-info::before {
+    content: "ℹ️";
+    font-size: 1.3rem;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-3px);
+    }
+
+    75% {
+        transform: translateX(3px);
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.scanning {
+    position: relative;
+    overflow: hidden;
+}
+
+.scanning::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.1),
+            transparent);
+    animation: scan 1.5s ease-in-out infinite;
+}
+
+@keyframes scan {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+#resultadoAnalise.animate-in {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =============================
+   DICAS DE OURO - CMD (ALINHAMENTO)
+   ============================= */
+.dica-de-ouro-container {
+    background: linear-gradient(145deg, rgba(20, 20, 40, 0.8), rgba(30, 30, 60, 0.7));
+    border: 1px solid rgba(100, 100, 200, 0.3);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 0 10px rgba(100, 100, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    margin-top: 2rem;
+}
+
+.dica-de-ouro-container:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.5),
+        inset 0 0 15px rgba(100, 100, 255, 0.2);
+}
+
+.dica-de-ouro-container h4 {
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 5px rgba(100, 100, 255, 0.5);
+}
+
+.dica-de-ouro-container p {
+    color: #ccc;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.como-abrir-box {
+    background: rgba(25, 25, 45, 0.6);
+    border: 1px solid rgba(100, 100, 200, 0.2);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.como-abrir-box h5 {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.como-abrir-box ol {
+    padding-left: 1.5rem;
+    line-height: 1.8;
+}
+
+.como-abrir-box li {
+    margin-bottom: 8px;
+    color: #ddd;
+}
+
+.como-abrir-box code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    background: #333;
+    color: #ffcc00;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.dica-extra {
+    background: linear-gradient(135deg, rgba(100, 50, 150, 0.3), rgba(50, 100, 200, 0.3));
+    border: 1px solid rgba(150, 100, 255, 0.4);
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 16px;
+}
+
+.dica-extra h6 {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dica-extra p {
+    color: #ddd;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.dica-extra code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    background: #444;
+    color: #ffcc00;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+/* =============================
+   COLUNA DA DIREITA - FLUIDEZ E ALINHAMENTO (CHAVE PARA TIRAR O BUG VISUAL)
+   ============================= */
+.chat-tips-card {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    background: rgba(20, 15, 30, 0.85);
+    border: 1px solid var(--border-card);
+    border-radius: var(--border-radius);
+    padding: 1.5rem 2rem;
+    color: var(--farol-branco-fundo);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    overflow-y: auto;
+}
+
+/* Garante o espaçamento entre o carrossel e o divisor */
+.chat-tips-card .carousel {
+    flex-grow: 0;
+    /* Não precisa mais crescer para preencher a coluna */
+    position: relative;
+    /* Adicionando padding na parte de baixo para dar espaço aos indicators */
+    padding-bottom: 60px;
+    /* Garante espaço abaixo do carrossel */
+}
+
+.chat-tips-card .carousel-inner {
+    position: relative;
+    width: 100%;
+    /* Altura mínima ajustável (se necessário) */
+    min-height: 180px;
+    overflow: hidden;
+}
+
+/* Corrige o espaçamento vertical do divisor */
+.chat-tips-card hr {
+    border-color: #444;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.chat-tips-card .carousel-item {
+    text-align: center;
+    /* CHAVE: Aumentar o padding vertical para centralizar a frase e dar espaço */
+    padding: 3rem 15% 3.5rem 15%;
+    min-height: 180px;
+    /* Garante que todos os itens tenham espaço para a frase + setas/indicators */
+    font-style: italic;
+    color: var(--farol-dourado-texto);
+    font-size: 1.1rem;
+}
+
+.chat-tips-card .carousel-indicators {
+    position: absolute;
+    /* CRÍTICO: Posicionar os indicadores ABSOLUTAMENTE dentro do espaço reservado */
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+
+@media (max-width: 576px) {
+
+    /* Ajustes de altura aqui para garantir que o chat ainda seja visível no mobile */
+    .chat-main-container {
+        height: 60vh;
+        min-height: 300px;
+    }
+
+    .chat-container {
+        height: 40vh;
+        min-height: 200px;
+    }
+
+
+    .chat-messages {
+        padding: 1rem;
+    }
+
+    .chat-input {
+        padding: 1rem;
+    }
+
+    .chat-input .form-control {
+        font-size: 0.85rem;
+    }
+
+    .chat-input .btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+}
+
+/* =============================
+   WIDGET FLUTUANTE DO CHAT (VOLTANDO!)
+   ============================= */
+.chat-widget-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1050;
+}
+
+.chat-widget-icon {
+    background: var(--btn-primary-bg);
+    background-size: 200% 200%;
+    animation: gradient-animation 10s ease infinite;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.chat-widget-icon:hover {
+    transform: scale(1.1);
+    animation: gradient-animation-hover 3s ease infinite alternate;
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.7);
+    color: white;
+}
+
+/* Bolha de "Olá!" */
+.chat-widget-bubble {
+    position: absolute;
+    bottom: 75px;
+    right: 0;
+    background-color: white;
+    color: var(--farol-roxo-escuro);
+    padding: 10px 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+    font-weight: 600;
+    font-size: 0.9rem;
+    opacity: 0;
+    animation: apresentarEsumir 10s ease 1.5s forwards;
+    pointer-events: none;
+}
+
+/* Seta da bolha */
+.chat-widget-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    right: 25px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid white;
+}
+
+/* Animações do widget */
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes gradient-animation-hover {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes apresentarEsumir {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+/* =============================
+   CORREÇÃO GLOBAL: GARANTIR QUE NENHUMA DIV CAUSE OVERFLOW HORIZONTAL
+   ============================= */
+
+
+#resultadoAnalise {
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-x: hidden;
+}
+
+/* Garante que o input-group não ultrapasse a largura */
+.input-group {
+    width: 100%;
+}
+
+/* =================================================================== */
+/* 5. ANIMAÇÕES (Keyframes) */
+/* =================================================================== */
+
+/* Animação de flutuação suave */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Animação de gradiente (para botões) */
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes gradient-animation-hover {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Animação da bolha do widget (Aparecer e Sumir) */
+@keyframes apresentarEsumir {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    5% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+/* =================================================================== */
+/* 6. ESTILOS DO DASHBOARD DE AMEAÇAS */
+/* =================================================================== */
+/* =============================
+   HOVER AMARELO NAS CAIXAS PRINCIPAIS (BORDA E SOMBRA)
+   ============================= */
+.card.h-100.shadow-lg,
+.card.h-100.shadow-sm,
+.card.shadow-lg,
+.card.shadow-sm {
+    transition: all 0.3s ease;
+}
+
+.card.h-100.shadow-lg:hover,
+.card.h-100.shadow-sm:hover,
+.card.shadow-lg:hover,
+.card.shadow-sm:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 8px 20px rgba(255, 200, 0, 0.2);
+    border-color: #ffc107 !important;
+    /* Borda amarela */
+}
+
+
+.dashboard-title {
+    font-family: var(--font-title);
+    font-size: 3.5rem;
+    text-shadow: 0 0 15px rgba(255, 100, 200, 0.5), 0 0 25px rgba(142, 45, 226, 0.5);
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Efeito hover nos cards do carrossel */
+.carousel-item .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carousel-item .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(142, 45, 226, 0.3);
+}
+
+/* Card verde "Próximos Passos" (CTA do Dashboard) */
+.card-proximos-passos {
+    background: rgba(20, 15, 30, 0.85);
+    border: 1px solid rgba(0, 255, 0, 0.4);
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.2);
+}
+
+.dashboard-card {
+    transition: all 0.3s ease;
+    border: 1px solid #36393f;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--border-card-hover);
+    box-shadow: var(--shadow-card-hover);
+}
+
+
+/* =================================================================== */
+/* 7. AJUSTES RESPONSIVOS (Media Queries) */
+/* =================================================================== */
+
+/* --- Tablets (Tamanho 'lg' e abaixo)
+@media (max-width: 991px) {
+
+    .chat-container,
+    .chat-tips-card {
+        min-height: auto;
+        height: auto;
+    }
+
+    .chat-container {
+        min-height: 500px;
+    }
+
+    .chat-tips-card {
+        margin-top: 1.5rem;
+    }
+} --- */
+
+/* --- Celulares Maiores (Tamanho 'md' e abaixo) 
+@media (max-width: 768px) {
+
+    .hero-content h1,
+    body.no-glass .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero .lead {
+        font-size: var(--font-size-base);
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .nav-item {
+        margin: 5px 0;
+    }
+
+    .card {
+        margin-bottom: 20px;
+    }
+
+    .auth-box {
+        padding: 30px 20px;
+    }
+
+    .form-control {
+        font-size: var(--font-size-sm);
+    }
+
+    .dashboard-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-content {
+        padding: 30px 20px;
+    }
+
+    .hero-content .lead,
+    body.no-glass .hero-content .lead {
+        font-size: var(--font-size-base);
+    }
+}--- */
+
+/* --- Celulares Pequenos (Tamanho 'sm' e abaixo) 
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero .lead {
+        font-size: var(--font-size-xs);
+        color: #9C4DFF;
+    }
+
+    .navbar-nav .nav-link {
+        font-size: var(--font-size-xs);
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .card-text {
+        font-size: var(--font-size-xs);
+    }
+
+    .chat-widget-container {
+        display: none;
+    }
+
+    .dashboard-title {
+        font-size: 2rem;
+    }
+}
+--- */
+/* =================================================================== */
+/* 8. MURAL
+/* =================================================================== */
+.post-card {
+    background: rgba(30, 30, 40, 0.8);
+    border: 1px solid rgba(142, 45, 226, 0.4);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 8px rgba(81, 16, 204, 0.2);
+    transition: all 0.3s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--farol-amarelo-destaque);
+    box-shadow: 0 8px 16px rgba(255, 215, 0, 0.2);
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.post-title {
+    font-weight: bold;
+    color: #ffffff;
+    margin: 0;
+    animation: float 6s ease-in-out infinite;
+}
+
+.post-author {
+    color: #aaa;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.post-content {
+    color: #ccc;
+    margin-bottom: 1rem;
+}
+
+.post-rating {
+    color: gold;
+    margin-bottom: 1rem;
+}
+
+.post-date {
+    color: #888;
+    font-size: 0.8rem;
+}
+
+.admin-actions {
+    margin-top: 1rem;
+    text-align: right;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.btn-edit {
+    background: #f4e80a;
+    /* dourado bonito */
+    color: #1a1a1a;
+    border: none !important;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-edit:hover {
+    background: #b89039;
+    /* dourado mais escuro */
+    color: #000;
+}
+
+.btn-delete {
+    background: #f10606;
+    /* vermelho escuro elegante */
+    color: white;
+    border: none !important;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-delete:hover {
+    background: #8b1f1f;
+    /* vermelho ainda mais fechado */
+    color: #fff;
+}
+
+
+/* Efeito de brilho suave ao passar o mouse */
+.btn-edit:hover,
+.btn-delete:hover {
+    animation: glow 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 8px rgba(192, 5, 189, 0.5), 0 0 12px rgba(239, 16, 179, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 12px rgba(162, 100, 255, 0.807), 0 0 20px rgba(181, 49, 252, 0.5);
+    }
+
+    100% {
+        box-shadow: 0 0 8px rgba(8, 12, 233, 0.5), 0 0 12px rgba(23, 90, 214, 0.3);
+    }
+}
+
+
+.content-link {
+    color: #8e2dca;
+    text-decoration: underline;
+    font-weight: bold;
+    padding: 0;
+    background: none;
+    border: none;
+}
+
+.content-link:hover {
+    color: #ff6b6b;
+    text-decoration: underline;
+}
+
+/* =============================
+   CORREÇÃO GLOBAL: GARANTIR QUE NENHUMA DIV CAUSE OVERFLOW HORIZONTAL
+   ============================= */
+.analise-link-container,
+.dica-de-ouro-container,
+.chat-tips-card {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#resultadoAnalise {
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-x: hidden;
+}
+
+/* Garante que o input-group não ultrapasse a largura */
+.input-group {
+    width: 100%;
+}

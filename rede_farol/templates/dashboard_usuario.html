@@ -1,0 +1,895 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Dashboard de Segurança - Rede Farol
+{% endblock %}
+
+{% block styles %}
+  {{ super() }}
+
+  <style>
+    /* CSS DO RADIAL PROGRESS E HOVER (ORIGINAL) */
+    .radial-progress {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: conic-gradient(var(--color) var(--degrees), #333 var(--degrees));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+    .radial-progress::before {
+      content: '';
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: #1a1a2e; /* Cor do fundo do card para combinar */
+    }
+    .radial-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+    .radial-score {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #fff;
+    }
+    .radial-label {
+      font-size: 0.8rem;
+      color: #aaa;
+      text-transform: uppercase;
+    }
+    
+    /* CARD DO DIAGNÓSTICO - ROXO COM OPACIDADE */
+    .diagnostico-card {
+      background: rgba(70, 30, 120, 0.7) !important;
+      border: 2px solid #8e2de2 !important;
+      transition: all 0.3s ease-in-out;
+      margin-bottom: 40px;
+    }
+    .diagnostico-card:hover {
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.8) !important;
+      transform: translateY(-3px);
+    }
+    
+    /* BOTÃO REFAZER BONITO */
+    .btn-refazer {
+      background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+      border: none;
+      color: white;
+      padding: 8px 25px;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(142, 45, 226, 0.4);
+    }
+    .btn-refazer:hover {
+      background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(57, 1, 105, 0.6);
+      color: white;
+    }
+    
+    /* CORREÇÃO FINAL DO SCROLL (APLICADO EM .comentario-scroll-box) */
+    .comentario-scroll-box {
+      background: rgba(45, 30, 60, 0.9);
+      border: 1px solid rgba(142, 45, 226, 0.3);
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 10px;
+      max-height: 100px;
+      overflow-y: auto;
+      word-break: break-all;
+      word-wrap: break-word;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .comentario-scroll-box::-webkit-scrollbar {
+      width: 6px;
+    }
+    .comentario-scroll-box::-webkit-scrollbar-thumb {
+      background-color: #8e2de2;
+      border-radius: 3px;
+    }
+    .hover-underline:hover {
+      text-decoration: underline !important;
+    }
+    
+    /* ESTILO PARA OS TÍTULOS DAS AVALIAÇÕES (ROXO + OPACIDADE) */
+    .avaliacao-titulo {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #d8b4fe;
+      background: rgba(79, 70, 229, 0.3);
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+    .avaliacao-titulo:hover {
+      color: #c084fc;
+      background: rgba(109, 40, 217, 0.4);
+      transform: scale(1.02);
+    }
+    
+    /* FRASES DIDÁTICAS NO GRÁFICO DE DIAGNÓSTICO */
+    .didatico-text {
+      font-size: 0.75rem;
+      color: #e2e8f0;
+      margin-top: 6px;
+      line-height: 1.4;
+      text-align: left;
+      padding-left: 15px;
+      position: relative;
+    }
+    .didatico-text::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #ffcc00;
+      font-weight: bold;
+      font-size: 0.8rem;
+    }
+    
+    /* LAYOUT UNIFORME */
+    .progress-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .progress-item {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .progress-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #fff;
+      font-size: 1rem;
+    }
+    
+    .progress-percent {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #ffcc00;
+    }
+    
+    .progress-bar-container {
+      height: 12px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 1s ease-in-out;
+    }
+    
+    .progress-tip {
+      font-size: 0.8rem;
+      color: #e2e8f0;
+      line-height: 1.4;
+      padding-left: 15px;
+      position: relative;
+    }
+    .progress-tip::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #ffcc00;
+      font-weight: bold;
+    }
+    
+    .progress-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 25px;
+      text-align: center;
+      border-bottom: 2px solid rgba(255, 204, 0, 0.3);
+      padding-bottom: 10px;
+    }
+    
+    @media (max-width: 768px) {
+      .progress-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+    
+      .progress-item {
+        min-height: 100px;
+        padding: 12px;
+      }
+    }
+    
+    /* ESTILO PARA O MINI CARROSSEL EDUCATIVO */
+    .mini-card-hover {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      background: rgba(26, 26, 46, 0.8);
+      border-radius: 8px;
+      padding: 15px;
+      transition: all 0.3s ease;
+    }
+    .mini-card-hover:hover {
+      background: rgba(45, 30, 60, 0.9);
+      transform: translateY(-2px);
+    }
+    .mini-card-hover h6 {
+      font-size: 1rem;
+      margin-top: 12px;
+      color: #d8b4fe;
+    }
+    
+    /* RESPONSIVIDADE */
+    @media (max-width: 768px) {
+      .dual-progress-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+    
+      .progress-item {
+        min-height: 70px;
+        margin-bottom: 15px;
+      }
+    }
+  </style>
+{% endblock %}
+{% block content %}
+  <div class="hero-content hero-content-box mx-auto text-center mb-5">
+    <h1 class="neon-float-title">Painel de Segurança</h1>
+    {% if session.logged_in %}
+      <p class="lead text-light mb-4">
+        Olá, <strong>{{ session.nome.split(' ').0 }}</strong>!
+      </p>
+      {% if not dados_diagnostico %}
+        <a href="{{ url_for('diagnostico') }}" class="btn btn-lg btn-farol shadow-lg animate-pulse"><i class="fas fa-calculator me-2"></i> Iniciar Meu Diagnóstico</a>
+      {% endif %}
+    {% else %}
+      <p class="lead text-light">Um primeiro olhar sobre nossa plataforma de acolhimento e proteção.</p>
+    {% endif %}
+  </div>
+
+  {% if dados_diagnostico %}
+    <div class="row mb-5 justify-content-center">
+      <div class="col-12">
+        <div class="card shadow-lg border-0 diagnostico-card">
+          <div class="card-header bg-transparent border-0 text-center pt-4 pb-0">
+            <h2 class="text-white mb-0"><i class="fas fa-clipboard-check me-2"></i> Resultado do Seu Diagnóstico</h2>
+            <p class="text-white-50">Baseado nas suas respostas recentes.</p>
+          </div>
+
+          <div class="card-body p-4">
+            <div class="row align-items-center">
+              <div class="col-md-4 text-center mb-4 mb-md-0">
+                {% set graus = dados_diagnostico.score_geral * 3.6 %}
+                {% set cor = '#ff3333' %}
+                {% if dados_diagnostico.score_geral >= 80 %}
+                  {% set cor = '#00ff88' %}
+                {% elif dados_diagnostico.score_geral >= 50 %}
+                  {% set cor = '#ffcc00' %}
+                {% endif %}
+
+                <div class="radial-progress" style="--degrees: {{ graus }}deg; --color: {{ cor }};">
+                  <div class="radial-content">
+                    <div class="radial-score" style="color: {{ cor }}">{{ dados_diagnostico.score_geral }}%</div>
+                    <div class="radial-label">Segurança</div>
+                  </div>
+                </div>
+                <h5 class="mt-3 text-white fw-bold">{{ dados_diagnostico.perfil_resultado }}</h5>
+                <a href="{{ url_for('diagnostico') }}" class="btn btn-refazer mt-2"><i class="fas fa-redo me-1"></i> Refazer</a>
+              </div>
+
+              <div class="col-md-8">
+                <h5 class="section-title">Seus Pontos Fortes e Fracos</h5>
+
+                <div class="progress-container">
+                  <div class="progress-item">
+                    <div class="progress-header">
+                      <div class="progress-title">
+                        <i class="fas fa-key text-primary"></i>
+                        <span>Senhas</span>
+                      </div>
+                      <div class="progress-percent">{{ dados_diagnostico.score_senhas }}%</div>
+                    </div>
+                    <div class="progress-bar-container">
+                      <div class="progress-bar bg-primary animate-bar" style="width: 0%;" data-width="{{ dados_diagnostico.score_senhas }}"></div>
+                    </div>
+                    <div class="progress-tip">Sua senha é sua chave mestra! Use letras, números, símbolos e evite dados pessoais.</div>
+                  </div>
+
+                  <div class="progress-item">
+                    <div class="progress-header">
+                      <div class="progress-title">
+                        <i class="fas fa-fish text-danger"></i>
+                        <span>Detecção de Golpes</span>
+                      </div>
+                      <div class="progress-percent">{{ dados_diagnostico.score_phishing }}%</div>
+                    </div>
+                    <div class="progress-bar-container">
+                      <div class="progress-bar bg-danger animate-bar" style="width: 0%;" data-width="{{ dados_diagnostico.score_phishing }}"></div>
+                    </div>
+                    <div class="progress-tip">Desconfie de mensagens urgentes ou prêmios falsos. Nunca compartilhe senhas.</div>
+                  </div>
+
+                  <div class="progress-grid-2">
+                    <div class="progress-item">
+                      <div class="progress-header">
+                        <div class="progress-title">
+                          <i class="fas fa-share-alt text-info"></i>
+                          <span>Redes Sociais</span>
+                        </div>
+                        <div class="progress-percent">{{ dados_diagnostico.score_social }}%</div>
+                      </div>
+                      <div class="progress-bar-container">
+                        <div class="progress-bar bg-info animate-bar" style="width: 0%;" data-width="{{ dados_diagnostico.score_social }}"></div>
+                      </div>
+                      <div class="progress-tip">Revise privacidade. Não compartilhe localização ou fotos íntimas.</div>
+                    </div>
+
+                    <div class="progress-item">
+                      <div class="progress-header">
+                        <div class="progress-title">
+                          <i class="fas fa-laptop text-success"></i>
+                          <span>Dispositivos</span>
+                        </div>
+                        <div class="progress-percent">{{ dados_diagnostico.score_dispositivos }}%</div>
+                      </div>
+                      <div class="progress-bar-container">
+                        <div class="progress-bar bg-success animate-bar" style="width: 0%;" data-width="{{ dados_diagnostico.score_dispositivos }}"></div>
+                      </div>
+                      <div class="progress-tip">Mantenha antivírus e sistema atualizados. Evite Wi-Fi público.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <h2 class="text-white mb-3"><i class="fas fa-shield-alt me-2 text-success"></i> Comece por Aqui: Dicas de Ouro</h2>
+  <div id="dicasCarrossel" class="carousel slide mb-5" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#dicasCarrossel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+      <button type="button" data-bs-target="#dicasCarrossel" data-bs-slide-to="1"></button>
+      <button type="button" data-bs-target="#dicasCarrossel" data-bs-slide-to="2"></button>
+      <button type="button" data-bs-target="#dicasCarrossel" data-bs-slide-to="3"></button>
+      <button type="button" data-bs-target="#dicasCarrossel" data-bs-slide-to="4"></button>
+      <button type="button" data-bs-target="#dicasCarrossel" data-bs-slide-to="5"></button>
+    </div>
+
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-key fa-3x text-primary"></i>
+                </div><h5 class="text-white fw-bold">Use Senhas Fortes</h5><p class="text-white-75 small mb-0">Sua senha é sua porta. Use mais de 12 caracteres, misture maiúsculas, números e símbolos.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-mobile-alt fa-3x text-success"></i>
+                </div><h5 class="text-white fw-bold">Verificação em 2 Etapas</h5><p class="text-white-75 small mb-0">É uma segunda senha, geralmente um código no celular. Mesmo que descubram sua senha principal, o golpista não entra.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-user-secret fa-3x text-info"></i>
+                </div><h5 class="text-white fw-bold">Não Repita Senhas</h5><p class="text-white-75 small mb-0">Usar a mesma senha para tudo é arriscado. Se um site vazar, todos os outros estarão em perigo.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-wifi fa-3x text-danger"></i>
+                </div><h5 class="text-white fw-bold">Acesse o Banco no 4G</h5><p class="text-white-75 small mb-0">Redes Wi-Fi de rodoviárias ou cafés são abertas. Golpistas podem 'escutar' o que você digita.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-link fa-3x text-danger"></i>
+                </div><h5 class="text-white fw-bold">O que é Phishing?</h5><p class="text-white-75 small mb-0">É a 'pescaria digital'. O golpista envia um link falso (ex: 'banco-itau.xyz') que parece original.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-envelope-open-text fa-3x text-warning"></i>
+                </div><h5 class="text-white fw-bold">O E-mail "Urgente"</h5><p class="text-white-75 small mb-0">Recebeu aviso de conta bloqueada? É golpe. Eles usam a urgência para você agir sem pensar.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-gift fa-3x text-info"></i>
+                </div><h5 class="text-white fw-bold">O "Prêmio Fácil"</h5><p class="text-white-75 small mb-0">'Você ganhou um PIX de R$5.000!'. Ninguém dá dinheiro de graça. É isca para instalar vírus.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-store fa-3x text-success"></i>
+                </div><h5 class="text-white fw-bold">Apps Falsos (SMS)</h5><p class="text-white-75 small mb-0">Cuidado com SMS pedindo para 'atualizar o app do banco'. Baixe apenas das lojas oficiais.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fab fa-whatsapp fa-3x text-success"></i>
+                </div><h5 class="text-white fw-bold">Golpe do Parente (PIX)</h5><p class="text-white-75 small mb-0">Filho pedindo dinheiro de número novo? Ligue para o NÚMERO ANTIGO e confirme.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-headset fa-3x text-danger"></i>
+                </div><h5 class="text-white fw-bold">Falsa Central do Banco</h5><p class="text-white-75 small mb-0">O golpista diz que sua conta foi invadida. Desligue! O banco nunca liga pedindo senha.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-id-card fa-3x text-info"></i>
+                </div><h5 class="text-white fw-bold">Prova de Vida (INSS)</h5><p class="text-white-75 small mb-0">O INSS não manda link de WhatsApp. Golpistas usam isso para roubar dados de aposentados.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-qrcode fa-3x text-warning"></i>
+                </div><h5 class="text-white fw-bold">Cuidado com QR Code</h5><p class="text-white-75 small mb-0">Golpistas trocam o QR Code de boletos. Sempre leia o nome do 'Beneficiário' antes de pagar.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-users fa-3x text-primary"></i>
+                </div><h5 class="text-white fw-bold">Diálogo Aberto</h5><p class="text-white-75 small mb-0">Converse com seus filhos. Deixe claro que podem te contar se virem algo estranho.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-user-shield fa-3x text-success"></i>
+                </div><h5 class="text-white fw-bold">Controle Parental</h5><p class="text-white-75 small mb-0">Use o 'Google Family Link'. Não é para espionar, mas para proteger e limitar tempo.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-gamepad fa-3x text-info"></i>
+                </div><h5 class="text-white fw-bold">Cuidado nos Jogos</h5><p class="text-white-75 small mb-0">Ensine a nunca usar nome real ou endereço no chat dos jogos. 'Amigos' online podem ser adultos.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-comment-slash fa-3x text-danger"></i>
+                </div><h5 class="text-white fw-bold">Cyberbullying</h5><p class="text-white-75 small mb-0">Xingamento online. Regra de ouro: Não responda, tire print, bloqueie e conte a um adulto.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-network-wired fa-3x text-info"></i>
+                </div><h5 class="text-white fw-bold">Senha do Modem (DNS)</h5><p class="text-white-75 small mb-0">Mude a senha padrão do modem. Golpistas podem invadir e te desviar para sites falsos.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-wifi fa-3x text-danger"></i>
+                </div><h5 class="text-white fw-bold">Wi-Fi Público Falso</h5><p class="text-white-75 small mb-0">Cuidado com redes abertas ('SHOPPING_GRATIS'). Nunca acesse seu banco nelas.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-shield-virus fa-3x text-primary"></i>
+                </div><h5 class="text-white fw-bold">Mantenha Tudo Atualizado</h5><p class="text-white-75 small mb-0">Atualizações corrigem falhas de segurança. É a melhor defesa automática.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-file-medical fa-3x text-warning"></i>
+                </div><h5 class="text-white fw-bold">Backup é sua Salvação</h5><p class="text-white-75 small mb-0">Se pegar um vírus que bloqueia tudo (Ransomware), você perde o quê? Tenha backup na nuvem.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-user-lock fa-3x text-info"></i>
+                </div><h5 class="text-white fw-bold">LGPD é Seu Direito</h5><p class="text-white-75 small mb-0">Você tem direito de saber quais dados empresas têm de você e pedir para deletar.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-exclamation-triangle fa-3x text-danger"></i>
+                </div><h5 class="text-white fw-bold">Seu Dado Vazou?</h5><p class="text-white-75 small mb-0">Vazamentos são comuns. Se seu e-mail vazou, mude a senha e ative a verificação em 2 etapas.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-sliders-h fa-3x text-primary"></i>
+                </div><h5 class="text-white fw-bold">Ajuste de Privacidade</h5><p class="text-white-75 small mb-0">Cheque configurações de WhatsApp e Instagram. Deixe foto de perfil visível só para contatos.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 mb-3 mb-lg-0">
+            <div class="card h-100 shadow-sm dashboard-card">
+              <div class="card-body text-center p-4">
+                <div class="mb-3">
+                  <i class="fas fa-eye-slash fa-3x text-warning"></i>
+                </div><h5 class="text-white fw-bold">Cuidado com o Microfone</h5><p class="text-white-75 small mb-0">Revise permissões de apps. Um app de lanterna não tem motivo para acessar seu microfone.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#dicasCarrossel" data-bs-slide="prev" style="width: 5%;"><span class="carousel-control-prev-icon" aria-hidden="true"></span></button>
+    <button class="carousel-control-next" type="button" data-bs-target="#dicasCarrossel" data-bs-slide="next" style="width: 5%;"><span class="carousel-control-next-icon" aria-hidden="true"></span></button>
+  </div>
+
+  <h2 class="text-white mb-3 mt-5"><i class="fas fa-globe-americas me-2 text-info"></i> Cenário Global: Ataques Mais Comuns no Mundo</h2>
+  <p class="text-white-50 mb-4">Estes dados são estatísticas globais para você entender o que acontece na internet, independente do seu diagnóstico.</p>
+
+  <div class="row g-4 mb-5">
+    <div class="col-lg-6">
+      <div class="card h-100 shadow-lg" style="background: rgba(20, 15, 30, 0.85); border: 1px solid rgba(142, 45, 226, 0.4);">
+        <div class="card-header bg-dark text-white py-3">
+          <h4 class="mb-0"><i class="fas fa-chart-bar me-2 text-warning"></i> Ranking de Golpes (Mundial)</h4>
+        </div>
+        <div class="card-body p-4">
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1">
+              <span class="fw-bold text-white">Phishing (E-mail/SMS)</span><span class="text-warning">42%</span>
+            </div>
+            <div class="progress" style="height: 20px; border-radius: 10px;">
+              <div class="progress-bar bg-danger animate-bar" style="width: 0%;" data-width="42"></div>
+            </div>
+            <p class="text-white-50 small fst-italic mt-1 mb-0">É a 'pescaria digital' para roubar senhas.</p>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1">
+              <span class="fw-bold text-white">Golpe do Parente (WhatsApp)</span><span class="text-warning">28%</span>
+            </div>
+            <div class="progress" style="height: 20px; border-radius: 10px;">
+              <div class="progress-bar bg-warning animate-bar" style="width: 0%;" data-width="28"></div>
+            </div>
+            <p class="text-white-50 small fst-italic mt-1 mb-0">Golpista usa foto de parente para pedir PIX.</p>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1">
+              <span class="fw-bold text-white">Falsa Central / Suporte</span><span class="text-warning">18%</span>
+            </div>
+            <div class="progress" style="height: 20px; border-radius: 10px;">
+              <div class="progress-bar bg-info animate-bar" style="width: 0%;" data-width="18"></div>
+            </div>
+            <p class="text-white-50 small fst-italic mt-1 mb-0">Ligação falsa do 'banco' para 'cancelar compra'.</p>
+          </div>
+          <div>
+            <div class="d-flex justify-content-between mb-1">
+              <span class="fw-bold text-white">Outros Golpes</span><span class="text-warning">12%</span>
+            </div>
+            <div class="progress" style="height: 20px; border-radius: 10px;">
+              <div class="progress-bar bg-secondary animate-bar" style="width: 0%;" data-width="12"></div>
+            </div>
+            <p class="text-white-50 small fst-italic mt-1 mb-0">(Falso prêmio, app falso, etc.)</p>
+          </div>
+          <p class="text-white-50 small text-center mt-4 mb-0">
+            <i>Fonte: Compilado de dados de segurança (2025).</i>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card h-100 shadow-lg" style="background: rgba(20, 15, 30, 0.85); border: 1px solid rgba(142, 45, 226, 0.4);">
+        <div id="miniCarrosselEducativo" class="carousel slide h-100" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#miniCarrosselEducativo" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#miniCarrosselEducativo" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#miniCarrosselEducativo" data-bs-slide-to="2"></button>
+            <button type="button" data-bs-target="#miniCarrosselEducativo" data-bs-slide-to="3"></button>
+            <button type="button" data-bs-target="#miniCarrosselEducativo" data-bs-slide-to="4"></button>
+            <button type="button" data-bs-target="#miniCarrosselEducativo" data-bs-slide-to="5"></button>
+            <button type="button" data-bs-target="#miniCarrosselEducativo" data-bs-slide-to="6"></button>
+          </div>
+          <div class="carousel-inner h-100">
+            <div class="carousel-item active h-100">
+              <div class="card-header bg-dark text-white py-3">
+                <h4 class="mb-0"><i class="fas fa-fish me-2 text-warning"></i> O que é... Phishing?</h4>
+              </div>
+              <div class="card-body p-4 text-white-75 mini-card-hover">
+                <p>
+                  <strong>Phishing é a "pescaria digital"!</strong> Golpistas enviam e-mails, SMS ou mensagens falsos fingindo ser seu banco, uma loja ou até um amigo. O objetivo é roubar suas senhas ou dados pessoais.
+                </p>
+                <h6 class="text-white">Como se Proteger:</h6>
+                <p>Nunca clique em links desconhecidos. Sempre digite o endereço do site oficial no navegador. Se receber uma mensagem urgente, desconfie e entre em contato diretamente com a empresa.</p>
+              </div>
+            </div>
+            <div class="carousel-item h-100">
+              <div class="card-header bg-dark text-white py-3">
+                <h4 class="mb-0"><i class="fas fa-bug me-2 text-danger"></i> O que é... Malware?</h4>
+              </div>
+              <div class="card-body p-4 text-white-75 mini-card-hover">
+                <p>
+                  <strong>Malware é um programa malicioso</strong> que infecta seu computador ou celular. Ele pode roubar senhas, documentos ou até bloquear seu dispositivo exigindo pagamento (Ransomware).
+                </p>
+                <h6 class="text-white">Como se Proteger:</h6>
+                <p>Instale um antivírus confiável (como o Microsoft Defender, que já vem no Windows). Nunca baixe arquivos de pessoas ou sites desconhecidos. Mantenha seu sistema sempre atualizado.</p>
+              </div>
+            </div>
+            <div class="carousel-item h-100">
+              <div class="card-header bg-dark text-white py-3">
+                <h4 class="mb-0"><i class="fab fa-windows me-2 text-primary"></i> Antivírus do Windows</h4>
+              </div>
+              <div class="card-body p-4 text-white-75 mini-card-hover">
+                <p>
+                  <strong>O Microsoft Defender é excelente e gratuito!</strong> Ele já vem instalado no Windows 10 e 11. Não precisa instalar outro antivírus a menos que queira recursos extras.
+                </p>
+                <h6 class="text-white">Dica Extra:</h6>
+                <p>Para verificar se ele está ativo, vá em "Configurações > Atualização e Segurança > Segurança do Windows". Certifique-se de que "Proteção contra vírus e ameaças" está ligada.</p>
+              </div>
+            </div>
+            <div class="carousel-item h-100">
+              <div class="card-header bg-dark text-white py-3">
+                <h4 class="mb-0"><i class="fas fa-gem me-2 text-success"></i> Proteção Paga</h4>
+              </div>
+              <div class="card-body p-4 text-white-75 mini-card-hover">
+                <p>
+                  <strong>Antivírus pagos oferecem proteção extra.</strong> Eles costumam ter ferramentas para proteger compras online, bloquear sites perigosos e monitorar sua rede.
+                </p>
+                <h6 class="text-white">Exemplos:</h6>
+                <p>Kaspersky, Norton e Bitdefender são ótimas opções. Eles são úteis se você faz muitas compras online ou trabalha com dados sensíveis.</p>
+              </div>
+            </div>
+            <div class="carousel-item h-100">
+              <div class="card-header bg-dark text-white py-3">
+                <h4 class="mb-0"><i class="fas fa-terminal me-2 text-light"></i> Dica Rápida (CMD)</h4>
+              </div>
+              <div class="card-body p-4 text-white-75 mini-card-hover">
+                <p>
+                  <strong>O Windows tem uma ferramenta secreta chamada MRT!</strong> Ela limpa vírus que o antivírus comum pode não conseguir remover.
+                </p>
+                <h6 class="text-white">Como Usar:</h6>
+                <p>
+                  Pressione as teclas <strong>Windows + R</strong>, digite <strong>MRT</strong> e aperte Enter. Siga as instruções na tela. Faça isso uma vez por mês para manter seu PC saudável.
+                </p>
+              </div>
+            </div>
+            <div class="carousel-item h-100">
+              <div class="card-header bg-dark text-white py-3">
+                <h4 class="mb-0"><i class="fas fa-user-lock me-2 text-info"></i> O que é... LGPD?</h4>
+              </div>
+              <div class="card-body p-4 text-white-75 mini-card-hover">
+                <p>
+                  <strong>LGPD é a Lei Geral de Proteção de Dados.</strong> Ela garante que você tenha controle sobre seus dados pessoais. Empresas precisam pedir sua autorização para coletá-los.
+                </p>
+                <h6 class="text-white">Seus Direitos:</h6>
+                <p>Você pode pedir para uma empresa deletar seus dados, saber quais dados ela tem, e corrigir informações erradas. Nunca ceda seus dados sem saber para que eles serão usados.</p>
+              </div>
+            </div>
+            <div class="carousel-item h-100">
+              <div class="card-header bg-dark text-white py-3">
+                <h4 class="mb-0"><i class="fas fa-door-closed me-2 text-danger"></i> O que é... Firewall?</h4>
+              </div>
+              <div class="card-body p-4 text-white-75 mini-card-hover">
+                <p>
+                  <strong>O Firewall é o porteiro da sua rede.</strong> Ele bloqueia conexões suspeitas que tentam entrar ou sair do seu computador, impedindo que hackers ou vírus se conectem a ele.
+                </p>
+                <h6 class="text-white">Como Está no Windows:</h6>
+                <p>O firewall do Windows já vem ativado por padrão. Para checar, vá em "Configurações > Atualização e Segurança > Segurança do Windows > Firewall e proteção de rede". Mantenha-o sempre ligado!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="text-white mb-3"><i class="fas fa-star me-2 text-warning"></i> Nossas Ferramentas Exclusivas</h2>
+  <div class="row g-4 mb-5">
+    <div class="col-lg-6">
+      <div class="card h-100 shadow-lg" style="background: rgba(20, 15, 30, 0.85); border: 1px solid rgba(142, 45, 226, 0.4);">
+        <div class="card-body p-5 text-center d-flex flex-column justify-content-between">
+          <div>
+            <i class="fas fa-robot fa-4x text-info mb-4"></i>
+            <h3 class="text-white fw-bold">Chatbot Tira-Dúvidas</h3>
+            <p class="text-white-75">Recebeu uma mensagem estranha no WhatsApp? Um e-mail suspeito? Cole o texto no nosso chatbot e ele te diz na hora o nível de risco e se parece golpe.</p>
+          </div>
+          <a href="{{ url_for('chatbot_page') }}" class="btn btn-refazer mt-2"><i class="fas fa-arrow-right me-2"></i> Ir para o Chatbot</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card h-100 shadow-lg" style="background: rgba(20, 15, 30, 0.85); border: 1px solid rgba(142, 45, 226, 0.4);">
+        <div class="card-body p-5 text-center d-flex flex-column justify-content-between">
+          <div>
+            <i class="fas fa-book-reader fa-4x text-success mb-4"></i>
+            <h3 class="text-white fw-bold">Curadoria de Conteúdo</h3>
+            <p class="text-white-75">Guias, vídeos e manuais organizados para você aprender sem complicação sobre segurança digital, de forma simples e direta.</p>
+          </div>
+          <a href="{{ url_for('listar_conteudos') }}" class="btn btn-refazer mt-2"><i class="fas fa-arrow-right me-2"></i> Ver a Curadoria</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if session.logged_in %}
+    <h2 class="text-white mb-3"><i class="fas fa-comment-dots me-2 text-success"></i> Suas Avaliações Recentes</h2>
+    <div class="row g-4">
+      {% if avaliacoes_recentes %}
+        {% for avaliacao in avaliacoes_recentes %}
+          <div class="col-lg-6">
+            <div class="card h-100 shadow-lg profile-hover-card" style="background: rgba(20, 15, 30, 0.85); border: 1px solid rgba(142, 45, 226, 0.4);">
+              <div class="card-body p-4">
+                {% if avaliacao.id_conteudo %}
+                  <h6 class="text-white fw-bold mb-2"><a href="{{ url_for('detalhes_conteudo', id_conteudo=avaliacao.id_conteudo) }}" class="text-decoration-none text-white hover-underline">{{ avaliacao.titulo }}</a></h6>
+                {% else %}
+                  <h6 class="text-white fw-bold mb-2">{{ avaliacao.titulo }}</h6>
+                {% endif %}
+
+                <div class="comentario-scroll-box">{{ avaliacao.comentario }}</div>
+
+                <div class="mb-2 mt-2">
+                  {% for i in range(5) %}
+                    {% if i < avaliacao.avaliacao %}
+                      <i class="fas fa-star text-warning"></i>
+                    {% else %}
+                      <i class="far fa-star text-muted"></i>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+
+                {% if avaliacao.titulo_conteudo and avaliacao.id_conteudo %}
+                  <small class="text-white-50">
+                    Avaliado em:
+                    <a href="{{ url_for('detalhes_conteudo', id_conteudo=avaliacao.id_conteudo) }}" class="text-info text-decoration-none fw-bold hover-underline">{{ avaliacao.titulo_conteudo }}</a>
+                  </small>
+                  <p class="text-white-75 small mt-1 mb-0">Descrição: {{ avaliacao.descricao|truncate(50) }}</p>
+                {% elif avaliacao.titulo_conteudo %}
+                  <small class="text-white-50">Avaliado em: <span class="text-info">{{ avaliacao.titulo_conteudo }}</span></small>
+                  <p class="text-white-75 small mt-1 mb-0">Descrição: {{ avaliacao.descricao|truncate(50) }}</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="col-12">
+          <div class="card h-100 shadow-lg" style="background: rgba(20, 15, 30, 0.85); border: 1px solid rgba(142, 45, 226, 0.4);">
+            <div class="card-body p-4 text-center">
+              <p class="text-white-75 mb-0">Você ainda não avaliou nenhum conteúdo.</p>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script>
+    function animateProgressBars() {
+      const bars = document.querySelectorAll('.animate-bar')
+      bars.forEach((bar) => {
+        const width = bar.getAttribute('data-width')
+        bar.style.width = width + '%'
+      })
+    }
+    setTimeout(animateProgressBars, 800)
+  </script>
+{% endblock %}

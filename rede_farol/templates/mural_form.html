@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if post %}Editar Avaliação{% else %}Nova Avaliação{% endif %} - Rede Farol
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<style>
+    /* Estilos para a funcionalidade de estrelas (mantidos) */
+    .star-rating {
+        display: inline-block;
+        font-size: 2rem;
+        cursor: pointer;
+        line-height: 1;
+        white-space: nowrap;
+    }
+
+    .star-rating i {
+        color: #555; 
+        transition: color 0.2s, transform 0.2s;
+        margin-right: 5px;
+        font-size: 1.5rem;
+    }
+
+    .star-rating i.filled {
+        color: #FFC107; 
+    }
+
+    .star-rating i:hover {
+        transform: scale(1.1);
+        text-shadow: 0 0 10px rgba(255, 193, 7, 0.7);
+    }
+
+    /* --- Novos Estilos --- */
+
+    .card-avaliacao {
+        background: rgba(30, 30, 50, 0.95); 
+        border: 2px solid rgba(142, 45, 226, 0.4); 
+        border-radius: 15px; 
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(142, 45, 226, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card-avaliacao:hover {
+        transform: translateY(-5px); 
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.9), 0 0 30px rgba(142, 45, 226, 0.6);
+    }
+
+    .card-header-avaliacao {
+        background: linear-gradient(90deg, #8e2de2, #4a00e0); 
+        color: #ffffff;
+        padding: 1.5rem 2rem;
+        border-bottom: none; 
+        border-top-left-radius: 13px; 
+        border-top-right-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center; 
+        position: relative;
+    }
+    
+    .card-header-avaliacao h4 {
+        margin-bottom: 0;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); 
+    }
+
+    .alert-conteudo-info {
+        background: linear-gradient(45deg, rgba(68, 138, 255, 0.2), rgba(0, 200, 255, 0.1)); 
+        border: 1px solid rgba(0, 150, 255, 0.4);
+        border-radius: 10px;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #c0e0ff; 
+        font-weight: 500;
+        box-shadow: 0 0 10px rgba(0, 150, 255, 0.2); 
+    }
+
+    .alert-conteudo-info .fas {
+        font-size: 1.5rem; 
+        color: #00bcd4; 
+        text-shadow: 0 0 8px rgba(0, 255, 255, 0.5); 
+    }
+
+    .form-label {
+        color: #b0b0b0; 
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .form-input {
+        background-color: rgba(40, 40, 70, 0.8); 
+        border: 1px solid rgba(142, 45, 226, 0.5); 
+        color: #e0e0e0;
+        border-radius: 8px;
+        padding: 10px 15px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-input:focus {
+        background-color: rgba(50, 50, 80, 0.9);
+        border-color: #8e2de2;
+        box-shadow: 0 0 0 0.25rem rgba(142, 45, 226, 0.4);
+        color: #ffffff;
+    }
+
+    /* CLASSE UNIFICADA para ambos os botões */
+    .btn-acao-mural {
+        background: linear-gradient(90deg, #4a00e0, #8e2de2); 
+        border: none;
+        color: #ffffff;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+    }
+
+    .btn-acao-mural:hover {
+        background: linear-gradient(90deg, #8e2de2, #4a00e0); 
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(142, 45, 226, 0.5);
+        color: #ffffff;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card card-avaliacao"> 
+                <div class="card-header card-header-avaliacao"> 
+                    <h4 class="mb-0">{% if post %}EDITAR AVALIAÇÃO{% else %}NOVA AVALIAÇÃO{% endif %}</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        
+                        {% if conteudo %}
+                            <div class="alert-conteudo-info mb-4 d-flex align-items-center gap-3">
+                                <!-- Imagem do Conteúdo -->
+                                {% if conteudo.thumbnail %}
+                                    <img src="{{ url_for('static', filename='uploads/' + conteudo.thumbnail) }}" 
+                                         alt="{{ conteudo.titulo }}" 
+                                         style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; box-shadow: 0 0 10px rgba(142, 45, 226, 0.5);">
+                                {% else %}
+                                    <div style="width: 80px; height: 80px; background: #4a00e0; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                {% endif %}
+
+                                <!-- Título e Descrição -->
+                                <div>
+                                    <h6 class="mb-1" style="color: #c0e0ff;">Você está avaliando:</h6>
+                                    <strong style="font-size: 1.1rem; color: #ffffff;">{{ conteudo.titulo }}</strong>
+                                    <p class="mt-1 mb-0" style="font-size: 0.9rem; color: #b0b0c0; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                        {{ conteudo.descricao|truncate(60) }}
+                                    </p>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="mb-3">
+                            <label for="titulo" class="form-label">Título da Avaliação</label>
+                            <input type="text" class="form-control form-input" id="titulo" name="titulo" value="{{ post.titulo if post else '' }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="comentario" class="form-label">Comentário</label>
+                            <textarea class="form-control form-input" id="comentario" name="comentario" rows="4" required>{{ post.comentario if post else '' }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="avaliacao" class="form-label">Avaliação (1 a 5 estrelas)</label>
+                            <div class="star-rating" id="starRating">
+                                {% for i in range(1, 6) %}
+                                    <i class="far fa-star star-icon" data-value="{{ i }}"></i>
+                                {% endfor %}
+                                <input type="hidden" id="avaliacaoInput" name="avaliacao" value="{{ post.avaliacao if post else 0 }}">
+                            </div>
+                        </div>
+{# Correção no arquivo 'templates/mural_form.html' #}
+
+<div class="d-flex gap-2 mt-4">
+    <button type="submit" class="btn btn-acao-mural">{% if post %}ATUALIZAR{% else %}ENVIAR{% endif %}</button>
+    
+    <a href="{{ url_for('listar_conteudos') }}" class="btn btn-acao-mural">VOLTAR</a>
+</div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const starRating = document.getElementById('starRating');
+    
+    if (starRating) {
+        const starIcons = starRating.querySelectorAll('.star-icon'); 
+        const avaliacaoInput = document.getElementById('avaliacaoInput');
+        
+        let hoverRating = 0; 
+
+        // Função para desenhar os ícones de estrela (cheia, meia, vazia)
+        function renderStars(rating, isHover = false) {
+            starIcons.forEach((icon, index) => {
+                const starNum = index + 1;
+                
+                icon.className = 'star-icon';
+                icon.style.color = isHover ? '#FFD700' : '#555'; 
+                
+                // 1. Estrela Cheia
+                if (rating >= starNum) {
+                    icon.classList.add('fas', 'fa-star', 'filled');
+                // 2. Estrela Parcial (Meia)
+                } else if (rating > starNum - 1) {
+                    icon.classList.add('fas', 'fa-star-half-alt', 'filled'); 
+                // 3. Estrela Vazia
+                } else {
+                    icon.classList.add('far', 'fa-star');
+                }
+                
+                if (!isHover) {
+                    icon.style.color = icon.classList.contains('filled') ? '#FFC107' : '#555';
+                }
+            });
+        }
+        
+        // Evento de Mouse Move (Detecta a posição para o hover)
+        starRating.addEventListener('mousemove', function(e) {
+            let foundRating = 0;
+            
+            starIcons.forEach((icon) => {
+                const rect = icon.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                
+                if (x > 0 && x < rect.width) {
+                    if (x > rect.width / 2) {
+                        foundRating = parseInt(icon.getAttribute('data-value'), 10);
+                    } else {
+                        foundRating = parseInt(icon.getAttribute('data-value'), 10) - 0.5;
+                    }
+                }
+                
+                if (e.clientX > rect.right) {
+                    foundRating = Math.max(foundRating, parseInt(icon.getAttribute('data-value'), 10));
+                }
+            });
+            
+            foundRating = Math.round(foundRating * 2) / 2;
+            
+            renderStars(foundRating, true); 
+            hoverRating = foundRating; 
+        });
+        
+        // Evento de Clique (Salva o valor detectado)
+        starRating.addEventListener('click', function() {
+            if (hoverRating === 0) {
+                 return;
+            }
+            avaliacaoInput.value = hoverRating;
+            renderStars(hoverRating, false); 
+        });
+
+        // Evento de Mouse Leave (Volta para o valor salvo)
+        starRating.addEventListener('mouseleave', function() {
+            renderStars(parseFloat(avaliacaoInput.value) || 0, false);
+            hoverRating = parseFloat(avaliacaoInput.value) || 0;
+        });
+
+        // Inicialização
+        renderStars(parseFloat(avaliacaoInput.value) || 0, false);
+    }
+});
+</script>
+{% endblock %}

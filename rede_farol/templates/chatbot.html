@@ -1,0 +1,592 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Chatbot de Ajuda - Rede Farol
+{% endblock %}
+
+{% block styles %}
+  {{ super() }}
+  <style>
+    /* Estilo principal do container do chat e análise */
+    .chat-main-container {
+      background: rgba(30, 30, 50, 0.85);
+      border: 1px solid rgba(142, 45, 226, 0.2);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    /* Estilo do container do chat (AUMENTADO) */
+    .chat-container {
+      background: rgba(15, 15, 30, 0.8);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 520px; /* Aumentado para mais espaço */
+      margin-bottom: 20px; /* Espaço entre o chat e a análise */
+    }
+
+    /* Área de mensagens com SCROLL */
+    .chat-messages {
+      padding: 15px;
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+
+    /* Estilização da barra de rolagem do chat */
+    .chat-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+    .chat-messages::-webkit-scrollbar-thumb {
+      background-color: #8e2de2;
+      border-radius: 3px;
+    }
+    .chat-messages::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Estilização das mensagens */
+    .message {
+      padding: 8px 12px;
+      border-radius: 15px;
+      margin-bottom: 10px;
+      max-width: 80%;
+      font-size: 0.95rem;
+      word-wrap: break-word;
+    }
+    .message.user {
+      background-color: #4a00e0;
+      color: white;
+      margin-left: auto;
+    }
+    .message.bot {
+      background-color: rgba(142, 45, 226, 0.4);
+      color: #e0e0ff;
+      margin-right: auto;
+    }
+
+    .chat-header {
+      background: linear-gradient(90deg, #8e2de2, #4a00e0);
+      color: white;
+      padding: 12px 20px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    .chat-input {
+      border-top: 1px solid rgba(142, 45, 226, 0.3);
+      padding: 10px 20px;
+    }
+
+    .btn-farol {
+      background-color: #8e2de2;
+      color: white;
+    }
+    .btn-farol:hover {
+      background-color: #4a00e0;
+      color: white;
+    }
+
+    /* Estilo para a área de dicas (uniforme) */
+    .chat-tips-card {
+      background: rgba(30, 30, 50, 0.85);
+      border: 1px solid rgba(142, 45, 226, 0.4);
+      border-radius: 12px;
+      padding: 20px;
+      color: #e0e0ff;
+      height: 100%; /* Preenche a coluna */
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Adicione isso no <style> do seu chatbot.html */
+.message.bot h1,
+.message.bot h2,
+.message.bot h3 {
+    color: #ffc107;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.message.bot strong {
+    color: #fff;
+    font-weight: bold;
+}
+
+.message.bot em {
+    color: #e0e0ff;
+    font-style: italic;
+}
+
+.message.bot ul {
+    padding-left: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+.message.bot li {
+    margin-bottom: 0.3rem;
+}
+
+.message.bot a {
+    color: #00ff88;
+    text-decoration: underline;
+    font-weight: bold;
+}
+    /* Estilo do carrossel de perguntas */
+    #dicasChatCarousel {
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+  
+	
+    /* LINHA SEPARADORA entre carrossel e dica de ouro */
+    .dica-separator {
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(142, 45, 226, 0.5), transparent);
+      margin: 20px 0;
+      width: 100%;
+    }
+
+    /* Estilo da Dica de Ouro - COMPLETAMENTE ISOLADO */
+    .dica-de-ouro-container {
+      background: rgba(30, 30, 50, 0.85);
+      border: 1px solid rgba(142, 45, 226, 0.4);
+      border-radius: 12px;
+      padding: 20px;
+      color: #e0e0ff;
+      margin-top: 10px;
+    }
+
+    .dica-de-ouro-container h4 {
+      color: #ffc107;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .dica-de-ouro-container p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .como-abrir-box,
+    .dica-extra {
+      background: rgba(15, 15, 30, 0.8);
+      border: 1px solid rgba(142, 45, 226, 0.3);
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 15px;
+    }
+
+    .como-abrir-box h5,
+    .dica-extra h6 {
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .como-abrir-box ol {
+      padding-left: 1.5rem;
+      line-height: 1.8;
+      font-size: 0.9rem;
+    }
+
+    .dica-extra p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+	/* Correção do Alerta de Link */
+.analise-result-box {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid;
+    transition: all 0.3s ease;
+}
+
+/* Garante que o texto de dentro seja legível */
+.analise-result-box h5, .analise-result-box p {
+    color: white !important; 
+    margin-bottom: 0;
+}
+
+/* Sobrescreve as cores para o tema Neon */
+.alert-success { 
+    background-color: rgba(0, 255, 136, 0.15) !important; 
+    border-color: #00ff88 !important; 
+}
+.alert-info { 
+    background-color: rgba(142, 45, 226, 0.15) !important; 
+    border-color: #8e2de2 !important; 
+}
+.alert-danger { 
+    background-color: rgba(255, 51, 51, 0.15) !important; 
+    border-color: #ff3333 !important; 
+}
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5 pt-4">
+    <div class="row g-4">
+      <!-- Coluna da Esquerda (Chat + Análise) -->
+      <div class="col-lg-7 col-12">
+        <div class="chat-main-container">
+          <!-- Chat Principal -->
+          <div class="chat-container">
+            <div class="chat-header">
+              <h4><i class="fas fa-robot me-2 text-info"></i> Assistente de Segurança</h4>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+              <div class="message bot">
+                {% if session.nome %}
+                  Olá, {{ session.nome.split(' ').0 }}! 👋
+                {% else %}
+                  Olá! 👋
+                {% endif %} Estou pronto para ajudar. Digite sua dúvida abaixo ou veja as dicas ao lado.
+              </div>
+            </div>
+            <div class="chat-input">
+              <form id="chat-form" class="d-flex w-100">
+                <input type="text" id="message-input" class="form-control" placeholder="Digite sua dúvida aqui..." autocomplete="off" required />
+                <button type="submit" class="btn btn-farol" id="chat-submit-button"><i class="fas fa-paper-plane"></i></button>
+                <button type="button" class="btn btn-danger" id="stop-button" style="display: none;"><i class="fas fa-stop"></i></button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Nova Caixa de Análise de Links -->
+          <div class="analise-link-container mt-4">
+            <h4><i class="fas fa-search me-2"></i> Analisador Rápido de Links</h4>
+            <p>Cole uma URL suspeita (recebida por WhatsApp ou e-mail) para checagem imediata de risco.</p>
+            <form id="analiseLinkForm">
+              <div class="input-group mb-3">
+                <input type="url" id="linkInput" class="form-control" placeholder="https://link-suspeito.com.br" required />
+                <button type="submit" class="btn btn-warning">Analisar</button>
+              </div>
+            </form>
+            <div id="resultadoAnalise" class="mt-2">
+              <p class="text-white-50">Cole e clique em "Analisar" para começar.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coluna da Direita (Dicas + Dica de Ouro) -->
+      <div class="col-lg-5 col-12">
+        <div class="chat-tips-card">
+          <!-- 1. Como usar o Assistente? -->
+          <h4><i class="fas fa-lightbulb me-2 text-warning"></i> Como usar o Assistente?</h4>
+          <p>Eu sou uma IA de acolhimento. Meu trabalho é te dar respostas simples e diretas para te ajudar a se proteger.</p>
+          <h5 class="mt-2 text-center">Experimente perguntar:</h5>
+
+          <!-- 2. Carrossel de Perguntas -->
+          <div id="dicasChatCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active carousel-pergunta">"Como eu ativo a verificação de duas etapas no Instagram?"</div>
+              <div class="carousel-item carousel-pergunta">"Recebi um SMS estranho, é golpe?"</div>
+              <div class="carousel-item carousel-pergunta">"Qual antivírus você recomenda?"</div>
+              <div class="carousel-item carousel-pergunta">"O que eu faço se cair num golpe de PIX?"</div>
+              <div class="carousel-item carousel-pergunta">"Como sei se meu antivírus do Windows está ligado?"</div>
+              <div class="carousel-item carousel-pergunta">"O que fazer se meu celular for roubado?"</div>
+              <div class="carousel-item carousel-pergunta">"O que é a 'caixa preta' do CMD?"</div>
+              <div class="carousel-item carousel-pergunta">"Qual comando do CMD limpa vírus?"</div>
+              <div class="carousel-item carousel-pergunta">"Como criar uma senha forte de verdade?"</div>
+              <div class="carousel-item carousel-pergunta">"É seguro meu filho jogar online com estranhos?"</div>
+              <div class="carousel-item carousel-pergunta">"Ligaram do banco pedindo minha senha, é normal?"</div>
+              <div class="carousel-item carousel-pergunta">"Posso postar foto do meu documento ou cartão?"</div>
+              <div class="carousel-item carousel-pergunta">"O que a LGPD me permite fazer com meus dados?"</div>
+              <div class="carousel-item carousel-pergunta">"Qual a maior ameaça de segurança digital hoje no mundo?"</div>
+              <div class="carousel-item carousel-pergunta">"Como verificar se meu celular tem um spyware?"</div>
+              <div class="carousel-item carousel-pergunta">"O que é o golpe do deepfake?"</div>
+              <div class="carousel-item carousel-pergunta">"Posso processar uma empresa se meus dados vazarem?"</div>
+              <div class="carousel-item carousel-pergunta">"Como faço para 'esconder' meu IP?"</div>
+            </div>
+
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="0" class="active"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="1"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="2"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="3"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="4"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="5"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="6"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="7"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="8"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="9"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="10"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="11"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="12"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="13"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="14"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="15"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="16"></button>
+              <button type="button" data-bs-target="#dicasChatCarousel" data-bs-slide-to="17"></button>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#dicasChatCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#dicasChatCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Próximo</span>
+            </button>
+          </div>
+
+          <!-- LINHA SEPARADORA -->
+          <div class="dica-separator"></div>
+
+          <!-- 3. Dica de Ouro -->
+          <div class="dica-de-ouro-container">
+            <h4><i class="fas fa-terminal me-2 text-warning"></i> Dica de Ouro: O "Prompt" (CMD)</h4>
+            <p class="text-white-75" style="font-size: 0.95rem; line-height: 1.6;">
+              Você já deve ter visto uma tela preta com letras brancas — é o <strong>"Prompt"</strong> ou <strong>"CMD"</strong>. Ela parece assustadora, mas é só uma <strong>ferramenta poderosa</strong> que permite dar ordens diretas ao seu computador.
+            </p>
+            <p class="text-white-75" style="font-size: 0.95rem; line-height: 1.6;">
+              Usamos ela para ferramentas rápidas que não têm ícone bonito — como o <strong>MRT</strong> (que o bot pode te ensinar a usar!).
+            </p>
+            <div class="como-abrir-box mt-3 p-3">
+              <h5 class="text-white mb-3"><i class="fas fa-keyboard me-2"></i> Como abrir (Jeito Fácil):</h5>
+              <ol class="text-white-75" style="font-size: 0.9rem; padding-left: 1.5rem; line-height: 1.8;">
+                <li><strong>Pressione ⊞ Windows + R</strong> ao mesmo tempo.</li>
+                <li>Uma janelinha chamada <strong>"Executar"</strong> aparece no canto da tela.</li>
+                <li>Digite <code class="bg-secondary px-2 py-1 rounded">cmd</code> e aperte <strong>Enter</strong>.</li>
+                <li>Pronto! A tela preta (o CMD) se abre — e você está no controle!</li>
+              </ol>
+            </div>
+            <div class="dica-extra mt-3 p-3">
+              <h6 class="text-white mb-2"><i class="fas fa-lightbulb me-2"></i> Dica Bônus:</h6>
+              <p class="text-white-75" style="font-size: 0.9rem;">
+                Se quiser fechar o CMD, basta digitar <code class="bg-secondary px-2 py-1 rounded">exit</code> e apertar Enter.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const chatForm = document.getElementById('chat-form')
+      const messageInput = document.getElementById('message-input')
+      const chatMessages = document.getElementById('chat-messages')
+      const submitButton = document.getElementById('chat-submit-button')
+      const stopButton = document.getElementById('stop-button')
+    
+      const analiseLinkForm = document.getElementById('analiseLinkForm')
+      const linkInput = document.getElementById('linkInput')
+      const resultadoAnalise = document.getElementById('resultadoAnalise')
+    
+      let abortController = null
+    
+   function addMessage(text, sender) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message', sender);
+
+    // Se for uma mensagem do BOT, converte Markdown para HTML
+    if (sender === 'bot') {
+        messageDiv.innerHTML = markdownToHtml(text); // ← AQUI ESTÁ A MÁGICA!
+    } else {
+        messageDiv.textContent = text; // Mensagem do usuário fica como texto puro
+    }
+
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+    
+      function showTypingIndicator() {
+        let typingIndicator = document.getElementById('typing-indicator')
+        if (!typingIndicator) {
+          typingIndicator = document.createElement('div')
+          typingIndicator.classList.add('message', 'bot')
+          typingIndicator.id = 'typing-indicator'
+          typingIndicator.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Digit...'
+          chatMessages.appendChild(typingIndicator)
+          chatMessages.scrollTop = chatMessages.scrollHeight
+        }
+      }
+    
+      function hideTypingIndicator() {
+        const typingIndicator = document.getElementById('typing-indicator')
+        if (typingIndicator) {
+          typingIndicator.remove()
+        }
+      }
+    
+      function showStopButton() {
+        submitButton.style.display = 'none'
+        stopButton.style.display = 'block'
+      }
+    
+      function showSendButton() {
+        submitButton.style.display = 'block'
+        stopButton.style.display = 'none'
+      }
+    
+// ✅ Evento do formulário de análise de links (FINAL - Mantendo a lógica de cores)
+analiseLinkForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const url = linkInput.value.trim();
+    const analiseButton = analiseLinkForm.querySelector('button[type="submit"]');
+
+    if (!url) {
+        resultadoAnalise.innerHTML = `<div class="alert alert-warning p-2">Por favor, insira um link válido.</div>`;
+        return;
+    }
+
+    // 1. Mostrar estado de "carregando"
+    resultadoAnalise.innerHTML = `<p class="text-warning"><span class="spinner-border spinner-border-sm me-2"></span> Escaneando ${url.substring(0, 30)}... Aguarde.</p>`;
+    analiseButton.disabled = true;
+    analiseButton.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+
+    try {
+        // 2. Chamar a API REAL (o seu Python com regras estáticas)
+        const response = await fetch('/api/analisar-link', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ url: url }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro na rede ou servidor.');
+        }
+
+        const data = await response.json();
+
+        // 3. CONSTRUIR O RESULTADO VISUAL COM ESTILOS NEON OPACIDADE
+        let riscoClass = 'alert-info'; // Padrão (Neutra)
+        let riscoIcon = 'fa-check-circle';
+        let customStyle = '';
+        
+        // Define cor e ícone baseado no risco
+        if (data.risco.toUpperCase().includes('ALTO') || data.risco.toUpperCase().includes('FALSIFICAÇÃO')) {
+            riscoClass = 'alert-danger'; 
+            riscoIcon = 'fa-skull-crossbones';
+        } else if (data.risco.toUpperCase().includes('MÉDIO')) {
+            riscoClass = 'alert-warning'; 
+            riscoIcon = 'fa-exclamation-triangle';
+        } else if (data.risco.toUpperCase().includes('BAIXO') || data.risco.toUpperCase().includes('CONFIÁVEL')) { 
+            riscoClass = 'alert-success';
+            riscoIcon = 'fa-shield-alt';
+            // Garante que a caixa de sucesso seja visível contra o fundo escuro
+            customStyle = 'style="background-color: rgba(0, 255, 136, 0.1); border-color: #00ff88; color: #00ff88;"';
+        } else if (data.risco.toUpperCase().includes('NEUTRA')) {
+            riscoClass = 'alert-info'; 	
+            riscoIcon = 'fa-search';
+            // Garante que a caixa neutra seja visível
+            customStyle = 'style="background-color: rgba(142, 45, 226, 0.1); border-color: #8e2de2; color: #e0e0ff;"';
+        }
+
+        const riscoTitulo = data.risco.toUpperCase();
+        const riscoMensagem = data.mensagem;
+
+       const resultado = `
+            <div class="alert ${riscoClass} p-3 analise-result-box" role="alert" ${customStyle}>
+                <h5 class="mb-1 fw-bold"><i class="fas ${riscoIcon} me-2"></i> ${riscoTitulo}</h5>
+                <p class="mb-0 small">${riscoMensagem}</p>
+            </div>
+        `;
+        resultadoAnalise.innerHTML = resultado;
+        
+        // Adiciona animação (opcional)
+        resultadoAnalise.classList.add('animate-in');
+        setTimeout(() => {
+            resultadoAnalise.classList.remove('animate-in');
+        }, 500);
+
+    } catch (error) {
+        console.error('Erro ao analisar o link:', error);
+        resultadoAnalise.innerHTML = '<div class="alert alert-danger p-2">Não foi possível analisar o link. Tente novamente.</div>';
+    } finally {
+        // 4. Resetar o botão
+        analiseButton.disabled = false;
+        analiseButton.innerHTML = 'Analisar';
+    }
+});
+    
+      // Evento do chat
+      chatForm.addEventListener('submit', async function (e) {
+        e.preventDefault()
+        const userMessage = messageInput.value
+        if (userMessage.trim() === '') return
+        addMessage(userMessage, 'user')
+        messageInput.value = ''
+        showTypingIndicator()
+        abortController = new AbortController()
+        showStopButton()
+        try {
+          const response = await fetch('/api/chatbot-ask', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: userMessage }),
+            signal: abortController.signal,
+          })
+          hideTypingIndicator()
+          if (!response.ok) throw new Error('Erro na rede ou servidor.')
+          const data = await response.json()
+          addMessage(data.answer, 'bot')
+        } catch (error) {
+          hideTypingIndicator()
+          if (error.name === 'AbortError') {
+            addMessage('Geração de resposta interrompida.', 'bot')
+          } else {
+            addMessage('Desculpe, estou com problemas de conexão. Tente novamente mais tarde.', 'bot')
+          }
+        } finally {
+          showSendButton()
+          abortController = null
+        }
+      })
+    
+      stopButton.addEventListener('click', function () {
+        if (abortController) abortController.abort()
+      })
+    
+      // FUNÇÃO QUE CONVERTE MARKDOWN EM HTML (SIMPLES)
+function markdownToHtml(text) {
+    if (!text) return '';
+
+    // 1. Converter cabeçalhos (###, ##, #)
+    text = text.replace(/###\s+(.+)$/gm, '<h3>$1</h3>');
+    text = text.replace(/##\s+(.+)$/gm, '<h2>$1</h2>');
+    text = text.replace(/#\s+(.+)$/gm, '<h1>$1</h1>');
+
+    // 2. Converter negrito (**texto** ou __texto__)
+    text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/__(.+?)__/g, '<strong>$1</strong>');
+
+    // 3. Converter itálico (*texto* ou _texto_)
+    text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    text = text.replace(/_(.+?)_/g, '<em>$1</em>');
+
+    // 4. Converter listas não ordenadas (- item)
+    text = text.replace(/^-\s+(.+)$/gm, '<li>$1</li>');
+    text = text.replace(/(<li>.+<\/li>\n?)+/g, '<ul>$&</ul>');
+
+    // 5. Converter links [texto](url)
+    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color: #00ff88; text-decoration: underline;">$1</a>');
+
+    // 6. Converter quebras de linha simples em <br>
+    text = text.replace(/\n/g, '<br>');
+
+    return text;
+}
+      document.querySelectorAll('.carousel-pergunta').forEach(pergunta => {
+        pergunta.style.cursor = 'pointer'
+        pergunta.addEventListener('click', () => {
+          messageInput.value = pergunta.innerText.replace(/"/g, '')
+          messageInput.focus()
+        })
+      })
+  })
+  </script>
+{% endblock %}

@@ -1,0 +1,23 @@
+# Ambiente virtual
+venv/
+env/
+.venv/
+
+# Arquivos de sistema e editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Compilados do Python (importante não subir isso)
+__pycache__/
+*.pyc
+
+# Logs e Banco de dados local
+*.log
+
+# Variáveis de ambiente (CONTÉM SENHAS - NÃO SUBIR)
+.env
+
+# Pasta de uploads (Geralmente não subimos os arquivos de teste)
+static/uploads/
