@@ -190,16 +190,6 @@ Todas as senhas são armazenadas com hash via **bcrypt**. O banco segue estrutur
 
 ---
 
-# 💡 Rede Farol - Segurança Digital
-
----
-
-## 🎥 Demonstração
-![Home](./assets/home.gif)
-![Chat](./assets/chat.gif)
-
----
-
 ## ⚙️ Como Rodar o Projeto Localmente
 
 ### 1. Pré-requisitos
