@@ -14,22 +14,23 @@
 
 O **Rede Farol** é uma plataforma web desenvolvida durante o **3º Semestre** do curso de Análise e Desenvolvimento de Sistemas. O objetivo foi criar uma solução com **impacto social real**: proteger públicos vulneráveis (idosos, crianças e leigos) contra golpes digitais.
 
-A aplicação utiliza IA Generativa (Google Gemini) para acolher o usuário, criptografia forte para proteção de dados e ferramentas práticas para identificar riscos.
+A aplicação combina IA Generativa (Google Gemini) para oferecer acolhimento ao usuário, criptografia avançada para garantir a segurança dos dados e ferramentas práticas para identificar riscos. O chat funciona como um guia, trazendo clareza e orientação ao usuário.
 
 ---
 
 ## 💡 Aprendizados e Evolução Técnica (Post-Mortem)
 
-> *Este projeto representa um marco importante na minha jornada de aprendizado.*
+> *Este projeto representa um marco importante na minha jornada de aprendizado.*  
 
-Ao revisitar este código hoje, com a experiência adquirida em arquitetura de software, identifico pontos cruciais de melhoria que aplicaria em uma versão 2.0:
+Ao revisitar este código hoje, com a experiência adquirida em arquitetura de software, identifico pontos cruciais de melhoria que aplicaria em uma versão 2.0:  
 
-* **Arquitetura Monolítica:** O projeto concentra a lógica em um arquivo principal. Hoje, eu utilizaria o padrão **MVC** ou **Blueprints** do Flask para separar responsabilidades.
-* **ORM vs SQL Puro:** Utilizei queries SQL diretas. Atualmente, optaria por um ORM como **SQLAlchemy** para maior segurança e abstração.
-* **Segurança:** A implementação do **Flask-Bcrypt** foi um passo fundamental para entender a importância de não salvar senhas em texto puro, elevando o nível de segurança da aplicação.
+- **Arquitetura Monolítica:** O projeto concentra a lógica em um arquivo principal. Hoje, eu utilizaria o padrão **MVC** ou **Blueprints** do Flask para separar responsabilidades.  
+- **Separação de Estilos (CSS):** Na versão inicial, o CSS estava centralizado. Agora, eu criaria arquivos de estilo separados para cada página, garantindo maior organização e manutenção.  
+- **ORM vs SQL Puro:** Utilizei queries SQL diretas. Atualmente, optaria por um ORM como **SQLAlchemy** para maior segurança e abstração.  
+- **Segurança:** A implementação do **Flask-Bcrypt** foi um passo fundamental para entender a importância de não salvar senhas em texto puro, elevando o nível de segurança da aplicação.  
 
-Manter o projeto original aqui serve para documentar minha **evolução técnica** de estudante para desenvolvedora profissional.
-
+😢 Olhando para o código antigo, percebo as limitações e escolhas que hoje não faria.  
+😊 Mas também sinto orgulho, porque manter o projeto original aqui serve para documentar minha **evolução técnica.**
 ---
 
 ## 📸 Tour pela Aplicação
@@ -38,9 +39,9 @@ Manter o projeto original aqui serve para documentar minha **evolução técnica
 
 A home acolhe o usuário com uma mensagem de boas-vindas e segmenta o conteúdo por público-alvo:
 
-- **Idosos e Leigos**: Prevenção contra phishing, golpes de falso suporte e WhatsApp.
-- **Crianças e Adolescentes**: Alertas sobre perigos em Discord/Telegram e cyberbullying.
-- **Pais e Responsáveis**: Ferramentas de controle parental e dicas de diálogo.
+- **Idosos e Leigos**: Prevenção contra phishing, golpes de falso suporte e WhatsApp.  
+- **Crianças e Adolescentes**: Alertas sobre perigos em plataformas digitais e cyberbullying.  
+- **Pais e Responsáveis**: Ferramentas de controle parental e dicas de diálogo.  
 
 > ✅ **Modal de Informação**: Ao clicar em qualquer card, abre um modal com dicas práticas e linguagem simples.
 
@@ -101,9 +102,13 @@ Versão pública do dashboard, com carrossel informativo, ranking dos golpes mai
 
 Catálogo de vídeos, PDFs e guias organizados por categoria (Controle Parental, Phishing, etc.). Os conteúdos podem ser:
 
-- **Vídeos locais**: Reproduzidos em modal com botão “Baixar Cartilha” (PDF).
-- **Vídeos do YouTube**: Redireciona diretamente para o YouTube (respeitando direitos autorais).
-- **Ranking dos Mais Populares**: Mostra os conteúdos mais avaliados.
+A plataforma oferece diferentes formatos de acesso:
+- **Vídeos locais (upload do PC)**: Reproduzidos em modal, permitindo assistir diretamente na aplicação.  
+- **Vídeos do YouTube**: Redirecionam para o YouTube, respeitando os direitos autorais.  
+- **Cartilhas em PDF**: Disponíveis para download através do botão **“Baixar Cartilha”**.  
+- **Ranking dos Mais Populares**: Exibe os conteúdos mais bem avaliados pelos usuários.
+
+> ℹ️ **Direitos autorais**: Todo conteúdo exibido inclui fonte de origem visível. Vídeos do YouTube redirecionam diretamente ao canal original. Materiais próprios foram produzidos com base em referências públicas e educacionais.
 
 ![Conteúdo](./assets/Conteúdo.gif)  
 ![Conteúdo com PDF/Vídeo](./assets/Conteúdo-pdf-video.gif)
@@ -116,15 +121,27 @@ Assistente de segurança com interface amigável:
 
 - Campo de texto para perguntas livres.
 - Dicas prontas clicáveis ao lado (ex: “Como ativar verificação em 2 etapas?”).
-- Analisador de links: Cole uma URL suspeita e receba um diagnóstico imediato.
+- Respostas contextualizadas com foco em segurança digital.
 
-> ✅ **Resposta contextualizada**: Se a IA não souber responder, ela redireciona para temas relacionados.
+> ✅ A IA não deixa de responder por falta de conhecimento, mas porque foi **programada para atuar exclusivamente em temas de segurança**.  
+
+Quando recebe uma pergunta fora desse escopo, ela redireciona para tópicos relacionados.  
+Exemplo: *Olá! Agradeço a sua pergunta, mas eu sou um assistente focado 100% em segurança digital. Minha especialidade é proteger você e sua família online.
+Não consigo ajudar com perguntas sobre vida pessoal, mas posso te ajudar a criar uma senha forte e segura agora mesmo! Que tal?”*  
 
 ![Chatbot](./assets/chat.gif)
 
 ---
 
-### 9. 📝 Avaliações (CRUD)
+### 9. 🔍 Analisador de Links
+
+Ferramenta integrada ao chatbot que analisa URLs suspeitas e retorna um diagnóstico imediato de confiabilidade.
+
+![Analisar Link](./assets/Analisar-link.gif)
+
+---
+
+### 10. 📝 Avaliações (CRUD)
 
 Usuários logados podem avaliar conteúdos com estrelas e comentários. As avaliações aparecem no mural e podem ser editadas ou excluídas pelo próprio usuário.
 
@@ -135,7 +152,7 @@ Usuários logados podem avaliar conteúdos com estrelas e comentários. As avali
 
 ---
 
-### 10. 👑 Painel Administrativo
+### 11. 👑 Painel Administrativo
 
 Acesso exclusivo para administradores. Permite:
 
@@ -149,14 +166,6 @@ Acesso exclusivo para administradores. Permite:
 
 ---
 
-### 11. 🔍 Analisador de Links
-
-Ferramenta integrada ao chatbot que analisa URLs suspeitas e retorna um diagnóstico de confiabilidade.
-
-![Analisar Link](./assets/Analisar-link.gif)
-
----
-
 ### 12. 🗃️ Banco de Dados Criptografado
 
 Todas as senhas são armazenadas com hash via **bcrypt**. O banco segue estrutura relacional segura com chaves estrangeiras.
@@ -167,20 +176,20 @@ Todas as senhas são armazenadas com hash via **bcrypt**. O banco segue estrutur
 
 ## 🛠️ Tecnologias Utilizadas
 
-* **Back-End:** Python, Flask.
-* **Front-End:** HTML5, CSS3, Bootstrap 5, JavaScript (interações dinâmicas).
-* **Segurança:** Flask-Bcrypt (hash de senhas), chaves secretas via `.env`.
-* **Banco de Dados:** MySQL (via conector `flask_mysqldb`).
-* **Inteligência Artificial:** Google Generative AI (Gemini) SDK.
-* **Upload de Arquivos:** Suporte a imagens, vídeos, áudios e PDFs.
+* **Back-End:** Python, Flask  
+* **Front-End:** HTML5, CSS3, Bootstrap 5, JavaScript (interações dinâmicas)  
+* **Segurança:** Flask-Bcrypt (hash de senhas), chaves secretas via `.env`  
+* **Banco de Dados:** MySQL (via conector `flask_mysqldb`)  
+* **Inteligência Artificial:** Google Generative AI (Gemini) SDK  
+* **Upload de Arquivos:** Suporte a imagens, vídeos, áudios e PDFs  
 
 ---
 
 ## ⚙️ Como Rodar o Projeto Localmente
 
 ### Pré-requisitos
-- Python instalado.
-- Servidor MySQL rodando (ex: XAMPP, WAMP, MariaDB, etc.).
+- Python instalado  
+- Servidor MySQL rodando (ex: XAMPP, WAMP, MariaDB, etc.)
 
 ### Passo a Passo
 
