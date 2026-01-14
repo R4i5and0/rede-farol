@@ -59,8 +59,9 @@ Tela de login com validação de e-mail e senha. Para novos usuários, há link 
 
 ---
 
-### 3. ⚠️ Confirmação de Saída
+### 3. 📌 Footer e ⚠️ Confirmação de Saída
 
+O “footer“ da aplicação contém ícones que, ao serem clicados, **redirecionam para suas respectivas páginas**. 
 Ao clicar em “Sair”, aparece um modal de confirmação para evitar saídas acidentais.
 
 ![Fim](./assets/fim.gif)
