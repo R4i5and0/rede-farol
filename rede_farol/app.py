@@ -22,7 +22,7 @@ import google.generativeai as genai
 app = Flask(__name__)
 
 # Chave secreta
-app.secret_key = os.getenv('SECRET_KEY', 'chave-secreta-muito-segura-123')
+app.secret_key = os.getenv('SECRET_KEY') # O sistema vai buscar apenas no seu .env local
 
 # Configuração de upload de arquivos
 UPLOAD_FOLDER = 'static/uploads'
