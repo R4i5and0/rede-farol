@@ -2,7 +2,7 @@
 
 > "Sua luz na segurança digital. Protegendo quem mais precisa com informação, tecnologia e acolhimento."
 
-![Status](https://img.shields.io/badge/Status-Concluído_(3º_Semestre)-blue)
+![Status](https://img.shields.io/badge/Status-Concluído_(4º_Semestre)-blue)
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
 ![Flask](https://img.shields.io/badge/Flask-Framework-black)
 ![MySQL](https://img.shields.io/badge/MySQL-Banco_de_Dados-orange)
@@ -185,15 +185,68 @@ Todas as senhas são armazenadas com hash via **bcrypt**. O banco segue estrutur
 
 ---
 
+# 💡 Rede Farol - Segurança Digital
+
+---
+
+## 🎥 Demonstração
+![Home](./assets/home.gif)
+![Chat](./assets/chat.gif)
+
+---
+
 ## ⚙️ Como Rodar o Projeto Localmente
 
-### Pré-requisitos
-- Python instalado  
-- Servidor MySQL rodando (ex: XAMPP, WAMP, MariaDB, etc.)
+### 1. Pré-requisitos
+* **Python** instalado em sua máquina.
+* **Servidor MySQL** ativo (XAMPP, WAMP ou similar).
 
-### Passo a Passo
+### 2. Configure o Banco de Dados
+* Abra o **phpMyAdmin** em: [http://localhost/phpmyadmin](http://localhost/phpmyadmin)
+* Crie um banco de dados chamado `rede_farol`.
+* Importe o script SQL: [`banco.sql`](./banco.sql)
 
-1. **Clone o repositório**
-   ```powershell
-   git clone https://github.com/R4i5and0/rede-farol.git
-   cd rede-farol
+### 3. Obtenha sua chave de API (Google Gemini)
+Para que o chatbot funcione, você precisa de uma chave própria:
+1. Acesse o [Google AI Studio](https://aistudio.google.com/).
+2. Faça login e clique em **"Get API key"**.
+3. Clique em **"Create API key in new project"** e copie o código.
+
+### 4. Configure as Variáveis de Ambiente
+Crie um arquivo chamado `.env` na raiz da pasta `rede_farol` e adicione:
+
+```env
+GOOGLE_API_KEY=SUA_CHAVE_AQUI
+SECRET_KEY=uma_chave_qualquer
+```
+
+### 5. Crie e ative o ambiente virtual
+```env
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+```
+
+### 6. Instale as dependências
+```env
+pip install flask flask-mysqldb bcrypt python-dotenv pymysql requests google-generativeai
+```
+
+### 7. Execute a aplicação
+```env
+python app.py
+```
+
+#### ✅ Acesse em: [http://127.0.0.1:5000](http://127.0.0.1:5000)
+
+---
+
+⚠️ **Importante:** Evite espaços no caminho da pasta!
+* ✅ **Use:** `C:\Rede_Farol\rede_farol`
+* ❌ **Não use:** `C:\Meus Projetos\Rede Farol`
+
+---
+
+### 📅 Status do Projeto
+**Finalizado em agosto de 2025**
+
+Desenvolvido com 💜 por **Raissa da Anunciação**
