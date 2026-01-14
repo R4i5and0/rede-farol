@@ -1,12 +1,14 @@
-# 💡 Rede Farol - Segurança Digital para Todos
+# 💡 Rede Farol – Segurança Digital para Todos
 
-> "Sua luz na segurança digital. Protegendo quem mais precisa com informação, tecnologia e acolhimento."
+> **“Sua luz na segurança digital. Protegendo quem mais precisa com informação, tecnologia e acolhimento.”**
 
-![Status](https://img.shields.io/badge/Status-Concluído_(4º_Semestre)-blue)
-![Python](https://img.shields.io/badge/Python-3.x-blue)
-![Flask](https://img.shields.io/badge/Flask-Framework-black)
-![MySQL](https://img.shields.io/badge/MySQL-Banco_de_Dados-orange)
-![Gemini AI](https://img.shields.io/badge/Google_Gemini-API-8E75B2)
+<div align="center">
+  <img src="https://img.shields.io/badge/Status-Concluído_(4º_Semestre)-blue?style=flat&logo=github" alt="Status"/>
+  <img src="https://img.shields.io/badge/Python-3.x-blue?style=flat&logo=python" alt="Python"/>
+  <img src="https://img.shields.io/badge/Flask-Framework-black?style=flat&logo=flask" alt="Flask"/>
+  <img src="https://img.shields.io/badge/MySQL-Banco_de_Dados-orange?style=flat&logo=mysql" alt="MySQL"/>
+  <img src="https://img.shields.io/badge/Google_Gemini-API-8E75B2?style=flat&logo=google" alt="Gemini AI"/>
+</div>
 
 ---
 
