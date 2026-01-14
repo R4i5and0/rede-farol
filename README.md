@@ -1,6 +1,6 @@
 # 💡 Rede Farol – Segurança Digital para Todos
 
-> ** ✨ “Sua luz na segurança digital. Protegendo quem mais precisa com informação, tecnologia e acolhimento.”**
+> ✨ **“Sua luz na segurança digital. Protegendo quem mais precisa com informação, tecnologia e acolhimento.”** 
 
 <div align="center">
   <img src="https://img.shields.io/badge/Status-Concluído_(4º_Semestre)-blue?style=flat&logo=github" alt="Status"/>
