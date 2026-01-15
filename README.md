@@ -79,6 +79,7 @@ Questionário que avalia o perfil de segurança do usuário com base em hábitos
 > ✅ **Resultado**: Classifica o usuário em 3 perfis: **Cauteloso**, **Cuidado** ou **Alvo Fácil**.
 
 ![Teste 1](./assets/Teste-1.gif)  
+
 ![Teste 2](./assets/Teste-2.gif)
 
 ---
