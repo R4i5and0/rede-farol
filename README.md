@@ -241,8 +241,10 @@ pip install flask flask-mysqldb bcrypt python-dotenv pymysql requests google-gen
 python app.py
 ```
 
-#### ✅ Acesse em: [http://127.0.0.1:5000](http://127.0.0.1:5000)
-
+### 8. Acesse em: 
+```env
+[http://127.0.0.1:5000](http://127.0.0.1:5000)
+```
 ---
 
 ⚠️ **Importante:** Evite espaços no caminho da pasta!
