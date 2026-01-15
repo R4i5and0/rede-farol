@@ -116,8 +116,6 @@ A plataforma oferece diferentes formatos de acesso:
 
 > ℹ️ **Direitos autorais**: Todo conteúdo exibido inclui fonte de origem visível. Vídeos do YouTube redirecionam diretamente ao canal original. Materiais próprios foram produzidos com base em referências públicas e educacionais.
 
-![Conteúdo](./assets/Conteúdo.gif) 
-
 ![Conteúdo com PDF/Vídeo](./assets/Conteúdo-pdf-video.gif)
 
 ---
