@@ -197,9 +197,15 @@ Todas as senhas são armazenadas com hash via **bcrypt**. O banco segue estrutur
 * **Servidor MySQL** ativo (XAMPP, WAMP ou similar).
 
 ### 2. Configure o Banco de Dados
-* Abra o **phpMyAdmin** em: [http://localhost/phpmyadmin](http://localhost/phpmyadmin)
-* Crie um banco de dados chamado `rede_farol`.
-* Importe o script SQL: [`banco.sql`](./banco.sql)
+Para este projeto, utilizei o **DBeaver** com o banco de dados **MySQL**, mas você pode utilizar qualquer ferramenta similar (como MySQL Workbench ou o phpMyAdmin do XAMPP).
+* **Crie o Banco de Dados:** Abra seu gerenciador e crie um novo schema chamado `rede_farol`.
+* **Importe o Script:** Localize o arquivo `banco.sql` e execute-o.
+    * *No DBeaver:* Clique com o botão direito no banco `rede_farol` > **Ferramentas** > **Executar script SQL**.
+    * *No phpMyAdmin:* Vá na aba **Importar** e selecione o arquivo.
+* **Credenciais Padrão:**
+    * **Usuário:** `root`
+    * **Senha:** *(vazio)*
+    * **Nota:** Se o seu banco tiver senha, lembre-se de editá-la no arquivo de conexão do Python.
 
 ### 3. Obtenha sua chave de API (Google Gemini)
 Para que o chatbot funcione, você precisa de uma chave própria:
