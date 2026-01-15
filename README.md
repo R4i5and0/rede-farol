@@ -116,7 +116,8 @@ A plataforma oferece diferentes formatos de acesso:
 
 > ℹ️ **Direitos autorais**: Todo conteúdo exibido inclui fonte de origem visível. Vídeos do YouTube redirecionam diretamente ao canal original. Materiais próprios foram produzidos com base em referências públicas e educacionais.
 
-![Conteúdo](./assets/Conteúdo.gif)  
+![Conteúdo](./assets/Conteúdo.gif) 
+
 ![Conteúdo com PDF/Vídeo](./assets/Conteúdo-pdf-video.gif)
 
 ---
@@ -154,6 +155,7 @@ Usuários logados podem avaliar conteúdos com estrelas e comentários. As avali
 > ✅ **Admin**: Pode ver e excluir todas as avaliações.
 
 ![Avaliação 1](./assets/Avaliacao-1.gif)  
+
 ![Avaliação 2](./assets/Avaliacao-2.gif)
 
 ---
@@ -168,6 +170,7 @@ Acesso exclusivo para administradores. Permite:
 > ✅ **Upload de Conteúdo**: Suporta vídeos locais, PDFs, thumbnails e links externos (YouTube).
 
 ![Painel Admin](./assets/painel-admin.gif)  
+
 ![Modal Admin](./assets/modal-admin.gif)
 
 ---
