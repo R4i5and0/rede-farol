@@ -14,7 +14,7 @@
 
 ## 📄 Sobre o Projeto
 
-O **Rede Farol** é uma plataforma web desenvolvida durante o **3º Semestre** do curso de Análise e Desenvolvimento de Sistemas. O objetivo foi criar uma solução com **impacto social real**: proteger públicos vulneráveis (idosos, crianças e leigos) contra golpes digitais.
+O **Rede Farol** é uma plataforma web desenvolvida durante o **4º Semestre** do curso de Análise e Desenvolvimento de Sistemas. O objetivo foi criar uma solução com **impacto social real**: proteger públicos vulneráveis (idosos, crianças e leigos) contra golpes digitais.
 
 A aplicação combina IA Generativa (Google Gemini) para oferecer acolhimento ao usuário, criptografia avançada para garantir a segurança dos dados e ferramentas práticas para identificar riscos. O chat funciona como um guia, trazendo clareza e orientação ao usuário.
 
