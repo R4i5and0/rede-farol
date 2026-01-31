@@ -106,7 +106,7 @@ Versão pública do dashboard, com carrossel informativo, ranking dos golpes mai
 
 ### 7. 🎥 Curadoria de Conteúdo (Logado)
 
-Catálogo de vídeos, PDFs e guias organizados por categoria (Controle Parental, Phishing, etc.). Os conteúdos podem ser:
+Catálogo de vídeos, PDFs e guias organizados por categoria (Controle Parental, Phishing, etc.).
 
 A plataforma oferece diferentes formatos de acesso:
 - **Vídeos locais (upload do PC)**: Reproduzidos em modal, permitindo assistir diretamente na aplicação.  
